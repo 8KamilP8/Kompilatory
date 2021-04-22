@@ -26,7 +26,7 @@ public class ComplexDouble {
     public static ComplexDouble div(ComplexDouble a, ComplexDouble b){
         ComplexDouble result;
         result = new ComplexDouble(a.realPart, a.imaginaryPart);
-        Double denominator = b.realPart * b.realPart - b.imaginaryPart * b.imaginaryPart;
+        Double denominator = b.realPart * b.realPart + b.imaginaryPart * b.imaginaryPart;
         result.realPart = (a.realPart*b.realPart+a.imaginaryPart*b.imaginaryPart) / denominator;
         result.imaginaryPart = (a.imaginaryPart*b.realPart-a.realPart*b.imaginaryPart) /denominator;
 
@@ -34,9 +34,9 @@ public class ComplexDouble {
     }
     @Override
     public String toString() {
-        return "ComplexDouble{" +
-                "realPart=" + realPart +
-                ", imaginaryPart=" + imaginaryPart +
-                '}';
+        return
+                "" + realPart +
+                " + " + imaginaryPart +
+                "i)";
     }
 }

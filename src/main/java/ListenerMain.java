@@ -16,7 +16,7 @@ public class ListenerMain {
         Scanner in = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Calculate: ");
+            System.out.print(">> ");
             String line = in.nextLine();
             if (line.toLowerCase().equals("exit") || line.isEmpty()) {
                 break;
