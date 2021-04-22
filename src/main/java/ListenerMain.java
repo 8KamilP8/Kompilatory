@@ -1,3 +1,4 @@
+import data.ComplexDouble;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -31,9 +32,9 @@ public class ListenerMain {
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(calculator, tree);
 
-            Double result = calculator.getResult();
+            ComplexDouble result = calculator.getResult();
 
-            System.out.println(result);
+            System.out.println(result.toString());
         }
     }
 }

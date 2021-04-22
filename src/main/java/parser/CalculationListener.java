@@ -3,7 +3,7 @@ package parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
+import data.ComplexDouble;
 import java.util.Stack;
 
 public class CalculationListener extends CalculatorBaseListener {
@@ -18,7 +18,7 @@ public class CalculationListener extends CalculatorBaseListener {
      * works via Last In First Out,
      * the right number should be "popped" off first.
      */
-    private Stack<Double> stack = new Stack<>();
+    private Stack<ComplexDouble> stack = new Stack<>();
 
 
 
@@ -29,7 +29,7 @@ public class CalculationListener extends CalculatorBaseListener {
      *
      * @return Double
      */
-    public Double getResult() {
+    public ComplexDouble getResult() {
         return this.stack.pop();
     }
 
@@ -55,12 +55,26 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterComplex_number(CalculatorParser.Complex_numberContext ctx) {
-        super.enterComplex_number(ctx);
+        int count = ctx.getChildCount();
+        if(count == 1){
+            Double realPart = Double.parseDouble(ctx.getChild(0).getText());
+            stack.push(new ComplexDouble(realPart,0.0));
+        }
+        else if(count == 4){
+            Double realPart = Double.parseDouble(ctx.getChild(0).getText());
+            Double imaginaryPart;
+            imaginaryPart = Double.parseDouble(ctx.getChild(2).getText());
+            if(ctx.getChild(1).getText().equals("+")){
+                stack.push(new ComplexDouble(realPart,imaginaryPart));
+            }else{
+                stack.push(new ComplexDouble(realPart,-imaginaryPart));
+            }
+
+        }
     }
 
     @Override
     public void exitComplex_number(CalculatorParser.Complex_numberContext ctx) {
-        super.exitComplex_number(ctx);
     }
 
     @Override
@@ -95,12 +109,29 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction_call(CalculatorParser.Function_callContext ctx) {
-        super.enterFunction_call(ctx);
+
     }
 
     @Override
     public void exitFunction_call(CalculatorParser.Function_callContext ctx) {
         super.exitFunction_call(ctx);
+        ComplexDouble b = stack.pop();
+        ComplexDouble a = stack.pop();
+        switch (ctx.getChild(0).getText()) {
+            case "+":
+                stack.push(ComplexDouble.add(a, b));
+                break;
+            case "-":
+                stack.push(ComplexDouble.sub(a, b));
+                break;
+            case "*":
+                stack.push(ComplexDouble.mul(a, b));
+                break;
+            case "/":
+                stack.push(ComplexDouble.div(a, b));
+                break;
+        }
+
     }
 
     @Override
