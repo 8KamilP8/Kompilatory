@@ -1,3 +1,4 @@
+package parser;
 // Generated from Calculator.g4 by ANTLR 4.9
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
