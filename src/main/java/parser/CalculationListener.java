@@ -4,6 +4,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import data.ComplexDouble;
+
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Stack;
 
 public class CalculationListener extends CalculatorBaseListener {
@@ -18,9 +21,10 @@ public class CalculationListener extends CalculatorBaseListener {
      * works via Last In First Out,
      * the right number should be "popped" off first.
      */
+
+    private HashMap<String,Integer> register = new HashMap<String, Integer>();
+
     private Stack<ComplexDouble> stack = new Stack<>();
-
-
 
 
     /**
@@ -79,7 +83,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterVariable(CalculatorParser.VariableContext ctx) {
-        super.enterVariable(ctx);
+        stack.push(ComplexDouble.add(stack.pop(),new ComplexDouble(1.0,0.0)));
     }
 
     @Override
@@ -89,7 +93,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterVariables(CalculatorParser.VariablesContext ctx) {
-        super.enterVariables(ctx);
+
     }
 
     @Override
@@ -191,7 +195,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void exitFunction(CalculatorParser.FunctionContext ctx) {
-        super.exitFunction(ctx);
+        register.put(ctx.getChild(2).getText(),stack.pop().realPart.intValue());
     }
 
     @Override

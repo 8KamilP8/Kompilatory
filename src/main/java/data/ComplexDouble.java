@@ -14,7 +14,9 @@ public class ComplexDouble {
         return new ComplexDouble(a.realPart+b.realPart, a.imaginaryPart+b.imaginaryPart);
     }
     public static ComplexDouble sub(ComplexDouble a, ComplexDouble b){
-        return  add(a, new ComplexDouble(-b.realPart,-b.imaginaryPart));
+        b.imaginaryPart *= -1;
+        b.realPart *= -1;
+        return  add(a, b);
     }
     public static ComplexDouble mul(ComplexDouble a, ComplexDouble b){
         ComplexDouble result;
@@ -37,6 +39,6 @@ public class ComplexDouble {
         return
                 "" + realPart +
                 " + " + imaginaryPart +
-                "i)";
+                "i";
     }
 }
