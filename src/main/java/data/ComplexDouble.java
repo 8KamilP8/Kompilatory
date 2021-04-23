@@ -34,6 +34,24 @@ public class ComplexDouble {
 
         return result;
     }
+    public static ComplexDouble mod(ComplexDouble a, ComplexDouble b){
+        return new ComplexDouble(a.realPart % b.realPart, 0.0);
+    }
+    public static ComplexDouble sin(ComplexDouble a){
+        return new ComplexDouble(Math.sin(a.realPart),0.0);
+    }
+    public static  ComplexDouble cos(ComplexDouble a){
+        return new ComplexDouble(Math.cos(a.realPart),0.0);
+    }
+    public static ComplexDouble tan(ComplexDouble a){
+        return new ComplexDouble(Math.tan(a.realPart),0.0);
+    }
+    public static ComplexDouble Re(ComplexDouble a){
+        return new ComplexDouble(a.realPart,0.0);
+    }
+    public static ComplexDouble Im(ComplexDouble a){
+        return new ComplexDouble(a.imaginaryPart,0.0);
+    }
     @Override
     public String toString() {
         return

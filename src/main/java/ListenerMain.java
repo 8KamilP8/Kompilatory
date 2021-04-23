@@ -14,8 +14,8 @@ import java.util.Scanner;
 public class ListenerMain {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-
-        while (true) {
+        System.out.println(0.2%0.1);
+        /*while (true) {
             System.out.print(">> ");
             String line = in.nextLine();
             if (line.toLowerCase().equals("exit") || line.isEmpty()) {
@@ -35,6 +35,6 @@ public class ListenerMain {
             ComplexDouble result = calculator.getResult();
 
             System.out.println(result.toString());
-        }
+        }*/
     }
 }

@@ -2,6 +2,7 @@ package parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import data.ComplexDouble;
 
@@ -190,7 +191,15 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction(CalculatorParser.FunctionContext ctx) {
-        super.enterFunction(ctx);
+        int height = getVariablesTreeHeight(ctx.getChild(4));
+        register.put(ctx.NAME().toString(), height);
+    }
+    private int getVariablesTreeHeight(ParseTree child){
+        if(child.getChildCount()==3){
+            return  getVariablesTreeHeight(child.getChild(2)) + 1;
+        } else{
+            return 1;
+        }
     }
 
     @Override

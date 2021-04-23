@@ -1,4 +1,4 @@
-// Generated from Calculator.g4 by ANTLR 4.9
+// Generated from .\Calculator.g4 by ANTLR 4.9
 package parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -7,6 +7,46 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link CalculatorParser}.
  */
 public interface CalculatorListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#start}.
+	 * @param ctx the parse tree
+	 */
+	void enterStart(CalculatorParser.StartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#start}.
+	 * @param ctx the parse tree
+	 */
+	void exitStart(CalculatorParser.StartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#pattern_matching}.
+	 * @param ctx the parse tree
+	 */
+	void enterPattern_matching(CalculatorParser.Pattern_matchingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#pattern_matching}.
+	 * @param ctx the parse tree
+	 */
+	void exitPattern_matching(CalculatorParser.Pattern_matchingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#logic_function_name}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogic_function_name(CalculatorParser.Logic_function_nameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#logic_function_name}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogic_function_name(CalculatorParser.Logic_function_nameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#pattern_matching_arg}.
+	 * @param ctx the parse tree
+	 */
+	void enterPattern_matching_arg(CalculatorParser.Pattern_matching_argContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#pattern_matching_arg}.
+	 * @param ctx the parse tree
+	 */
+	void exitPattern_matching_arg(CalculatorParser.Pattern_matching_argContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#real_number}.
 	 * @param ctx the parse tree
@@ -17,6 +57,16 @@ public interface CalculatorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReal_number(CalculatorParser.Real_numberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#function_name}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_name(CalculatorParser.Function_nameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#function_name}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_name(CalculatorParser.Function_nameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#signed_real_number}.
 	 * @param ctx the parse tree
@@ -137,16 +187,6 @@ public interface CalculatorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction(CalculatorParser.FunctionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CalculatorParser#start}.
-	 * @param ctx the parse tree
-	 */
-	void enterStart(CalculatorParser.StartContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CalculatorParser#start}.
-	 * @param ctx the parse tree
-	 */
-	void exitStart(CalculatorParser.StartContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#program_elements}.
 	 * @param ctx the parse tree
