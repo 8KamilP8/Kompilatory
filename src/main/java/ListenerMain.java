@@ -13,30 +13,6 @@ import java.util.Scanner;
 
 public class ListenerMain {
     public static void main(String[] args) throws IOException {
-        Scanner in = new Scanner(System.in);
-        System.out.println(0.2%0.1);
-        boolean fileMode = true;
-            /*//Enter terminal
-            while (true) {
-
-                System.out.print(">> ");
-
-                String line = in.nextLine();
-                if (line.toLowerCase().equals("exit") || line.isEmpty()) {
-                    break;
-                }
-                CharStream lineStream = CharStreams.fromString(line);
-
-                Lexer lexer = new CalculatorLexer(lineStream);
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-                CalculatorParser parser = new CalculatorParser(tokens);
-                ParseTree tree = parser.start();
-
-                CalculationListener calculator = new CalculationListener();
-                ParseTreeWalker walker = new ParseTreeWalker();
-                walker.walk(calculator, tree);
-                calculator.showRegister();
-            }*/
         String fileName = "src\\main\\java\\parser\\example_prog.hl";
         File file = new File(fileName);
         FileInputStream fis = null;

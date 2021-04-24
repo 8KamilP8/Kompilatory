@@ -2,13 +2,16 @@ package parser;
 
 import data.Callable;
 import data.PredicateHeader;
+import data.Where;
+import javafx.util.Pair;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import data.ComplexDouble;
 
-import java.util.Dictionary;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -25,13 +28,13 @@ public class CalculationListener extends CalculatorBaseListener {
      * the right number should be "popped" off first.
      */
 
-    private HashMap<PredicateHeader, Callable> register = new HashMap<PredicateHeader, Callable>();
+    private HashMap<PredicateHeader, ArrayList<Pair<Where,Callable>>> functionRegister = new HashMap<PredicateHeader, ArrayList<Pair<Where,Callable>>>();
 
     private Stack<ComplexDouble> stack = new Stack<>();
 
 
     public void showRegister(){
-        System.out.println(register);
+        System.out.println(functionRegister);
     }
     /**
      * The last value on the stack is the result of all
@@ -119,6 +122,18 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction_call(CalculatorParser.Function_callContext ctx) {
+        String functionName = ctx.getChild(0).getText();
+        int length = 2;
+        PredicateHeader header = new PredicateHeader(functionName, new String[length]);
+        var patternMatchingList = functionRegister.get(header);
+        for (var p:patternMatchingList) {
+            if(p.getKey().evaluate()){
+                p.getValue().Call();
+                break;
+            }
+        }
+        //check if functionName is in standard functions
+        //if not:
 
     }
 
@@ -208,7 +223,7 @@ public class CalculationListener extends CalculatorBaseListener {
             names[height-1]= tree.getChild(0).getText();
         }
 
-        register.put(new PredicateHeader(ctx.NAME().toString(), names),null);
+        functionRegister.put(new PredicateHeader(ctx.NAME().toString(), names),null);
     }
     private int getVariablesTreeHeight(ParseTree child){
         if(child.getChildCount()==3){
