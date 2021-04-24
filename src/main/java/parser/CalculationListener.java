@@ -1,5 +1,7 @@
 package parser;
 
+import data.Callable;
+import data.PredicateHeader;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -23,11 +25,14 @@ public class CalculationListener extends CalculatorBaseListener {
      * the right number should be "popped" off first.
      */
 
-    private HashMap<String,Integer> register = new HashMap<String, Integer>();
+    private HashMap<PredicateHeader, Callable> register = new HashMap<PredicateHeader, Callable>();
 
     private Stack<ComplexDouble> stack = new Stack<>();
 
 
+    public void showRegister(){
+        System.out.println(register);
+    }
     /**
      * The last value on the stack is the result of all
      * applied calculations.
@@ -63,16 +68,16 @@ public class CalculationListener extends CalculatorBaseListener {
         int count = ctx.getChildCount();
         if(count == 1){
             Double realPart = Double.parseDouble(ctx.getChild(0).getText());
-            stack.push(new ComplexDouble(realPart,0.0));
+            //stack.push(new ComplexDouble(realPart,0.0));
         }
         else if(count == 4){
             Double realPart = Double.parseDouble(ctx.getChild(0).getText());
             Double imaginaryPart;
             imaginaryPart = Double.parseDouble(ctx.getChild(2).getText());
             if(ctx.getChild(1).getText().equals("+")){
-                stack.push(new ComplexDouble(realPart,imaginaryPart));
+                //stack.push(new ComplexDouble(realPart,imaginaryPart));
             }else{
-                stack.push(new ComplexDouble(realPart,-imaginaryPart));
+                //stack.push(new ComplexDouble(realPart,-imaginaryPart));
             }
 
         }
@@ -84,7 +89,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterVariable(CalculatorParser.VariableContext ctx) {
-        stack.push(ComplexDouble.add(stack.pop(),new ComplexDouble(1.0,0.0)));
+        //stack.push(ComplexDouble.add(stack.pop(),new ComplexDouble(1.0,0.0)));
     }
 
     @Override
@@ -120,7 +125,7 @@ public class CalculationListener extends CalculatorBaseListener {
     @Override
     public void exitFunction_call(CalculatorParser.Function_callContext ctx) {
         super.exitFunction_call(ctx);
-        ComplexDouble b = stack.pop();
+        /*ComplexDouble b = stack.pop();
         ComplexDouble a = stack.pop();
         switch (ctx.getChild(0).getText()) {
             case "+":
@@ -135,7 +140,7 @@ public class CalculationListener extends CalculatorBaseListener {
             case "/":
                 stack.push(ComplexDouble.div(a, b));
                 break;
-        }
+        }*/
 
     }
 
@@ -192,19 +197,33 @@ public class CalculationListener extends CalculatorBaseListener {
     @Override
     public void enterFunction(CalculatorParser.FunctionContext ctx) {
         int height = getVariablesTreeHeight(ctx.getChild(4));
-        register.put(ctx.NAME().toString(), height);
+        String[] names = new String[height];
+        if(height > 0 ){
+            ParseTree tree = ctx.getChild(4);
+            for(int i=0; i<height-1;i++){
+                System.out.println(i);
+                names[i]= tree.getChild(0).getText();
+                tree = tree.getChild(2);
+            }
+            names[height-1]= tree.getChild(0).getText();
+        }
+
+        register.put(new PredicateHeader(ctx.NAME().toString(), names),null);
     }
     private int getVariablesTreeHeight(ParseTree child){
         if(child.getChildCount()==3){
             return  getVariablesTreeHeight(child.getChild(2)) + 1;
-        } else{
+        }  else if (child.getChildCount() >0){
             return 1;
+        }else{
+            return 0;
         }
     }
 
+
     @Override
     public void exitFunction(CalculatorParser.FunctionContext ctx) {
-        register.put(ctx.getChild(2).getText(),stack.pop().realPart.intValue());
+        //register.put(ctx.getChild(2).getText(),stack.pop().realPart.intValue());
     }
 
     @Override

@@ -37,4 +37,3 @@ function MBrot()
     epsilon = 0.001;
     wx(-2,0-2i);
 }
-Mbot();
