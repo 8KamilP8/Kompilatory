@@ -1,5 +1,5 @@
 package data;
 
-public interface Callable {
-    void Call();
+public interface Callable extends CallableArg {
+    void Call(CallableArg[] args);
 }

@@ -129,7 +129,7 @@ public class CalculationListener extends CalculatorBaseListener {
         if(patternMatchingList == null) return;
         for (var p:patternMatchingList) {
             if(p.getKey().evaluate()){
-                p.getValue().Call();
+                //p.getValue().Call();
                 break;
             }
         }
@@ -202,7 +202,8 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction_body(CalculatorParser.Function_bodyContext ctx) {
-        super.enterFunction_body(ctx);
+        //parse instructions into Callable implementing class
+
     }
 
     @Override
@@ -221,7 +222,7 @@ public class CalculationListener extends CalculatorBaseListener {
                 names[i]= tree.getChild(0).getText();
                 tree = tree.getChild(2);
             }
-            names[height-1]= tree.getChild(0).getText();
+            names[height-1] = tree.getChild(0).getText();
         }
 
         functionRegister.put(new PredicateHeader(ctx.NAME().toString(), names),null);

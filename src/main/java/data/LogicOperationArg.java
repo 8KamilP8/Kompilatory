@@ -1,5 +1,3 @@
 package data;
 
-public interface LogicOperationArg {
-    ComplexDouble getValue();
-}
+public interface LogicOperationArg extends Argument {}

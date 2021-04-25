@@ -1,4 +1,4 @@
-// Generated from .\Calculator.g4 by ANTLR 4.9
+// Generated from Calculator.g4 by ANTLR 4.9
 package parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -187,6 +187,26 @@ public interface CalculatorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction(CalculatorParser.FunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#program_instructions}.
+	 * @param ctx the parse tree
+	 */
+	void enterProgram_instructions(CalculatorParser.Program_instructionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#program_instructions}.
+	 * @param ctx the parse tree
+	 */
+	void exitProgram_instructions(CalculatorParser.Program_instructionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#program_instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterProgram_instruction(CalculatorParser.Program_instructionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#program_instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitProgram_instruction(CalculatorParser.Program_instructionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#program_elements}.
 	 * @param ctx the parse tree

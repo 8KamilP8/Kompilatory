@@ -1,6 +1,8 @@
 package data;
 
-public class ComplexDouble {
+import java.util.Objects;
+
+public class ComplexDouble implements CallableArg{
     public Double realPart;
     public Double imaginaryPart;
 
@@ -58,5 +60,24 @@ public class ComplexDouble {
                 "" + realPart +
                 " + " + imaginaryPart +
                 "i";
+    }
+
+    @Override
+    public ComplexDouble evaluateArg() {
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ComplexDouble that = (ComplexDouble) o;
+        return Objects.equals(realPart, that.realPart) &&
+                Objects.equals(imaginaryPart, that.imaginaryPart);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(realPart, imaginaryPart);
     }
 }
