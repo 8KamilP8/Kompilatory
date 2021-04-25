@@ -126,6 +126,7 @@ public class CalculationListener extends CalculatorBaseListener {
         int length = 2;
         PredicateHeader header = new PredicateHeader(functionName, new String[length]);
         var patternMatchingList = functionRegister.get(header);
+        if(patternMatchingList == null) return;
         for (var p:patternMatchingList) {
             if(p.getKey().evaluate()){
                 p.getValue().Call();

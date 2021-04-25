@@ -80,7 +80,7 @@ instructions: instruction WHITESPACE instructions | instruction;
 function_body : BEGIN WHITESPACE instructions WHITESPACE END;
 function : FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE WHERE'(' pattern_matching ')' WHITESPACE function_body
          | FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE function_body;
-
-
+program_instructions: program_instruction WHITESPACE program_instructions | program_instruction;
+program_instruction: instruction;
 program_elements: program_element WHITESPACE program_elements | program_element;
-program_element : function | instructions;
+program_element : function | program_instructions;
