@@ -1,3 +1,5 @@
 package data;
 
-public interface LogicOperationArg extends Argument {}
+public interface LogicOperationArg extends Argument {
+
+}

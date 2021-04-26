@@ -2,7 +2,7 @@ package data;
 
 import java.util.Objects;
 
-public class ComplexDouble implements CallableArg{
+public class ComplexDouble implements Argument{
     public Double realPart;
     public Double imaginaryPart;
 
@@ -63,11 +63,6 @@ public class ComplexDouble implements CallableArg{
     }
 
     @Override
-    public ComplexDouble evaluateArg() {
-        return this;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -79,5 +74,10 @@ public class ComplexDouble implements CallableArg{
     @Override
     public int hashCode() {
         return Objects.hash(realPart, imaginaryPart);
+    }
+
+    @Override
+    public ComplexDouble getValue() {
+        return this;
     }
 }

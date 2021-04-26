@@ -1,19 +1,17 @@
 package parser;
 
-import data.Callable;
-import data.PredicateHeader;
-import data.Where;
+import data.*;
 import javafx.util.Pair;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import data.ComplexDouble;
+import plotter.MatrixAggregator;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+
 
 public class CalculationListener extends CalculatorBaseListener {
     /**
@@ -28,10 +26,38 @@ public class CalculationListener extends CalculatorBaseListener {
      * the right number should be "popped" off first.
      */
 
-    private HashMap<PredicateHeader, ArrayList<Pair<Where,Callable>>> functionRegister = new HashMap<PredicateHeader, ArrayList<Pair<Where,Callable>>>();
+    private HashMap<PredicateHeader, ArrayList<Pair<Where, FunctionBody>>> functionRegister = new HashMap<PredicateHeader, ArrayList<Pair<Where,FunctionBody>>>();
 
-    private Stack<ComplexDouble> stack = new Stack<>();
+    private HashMap<String,ComplexDouble> globalVariableRegister = new HashMap<String,ComplexDouble>();
+    private HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
 
+    private Stack<ComplexDouble> numberStack = new Stack<>();
+    private Stack<FunctionCallHeader> functionStack = new Stack<>();
+    private Stack<Instruction> instructionStack = new Stack<>();
+    private MatrixAggregator aggregator;
+
+    private boolean isInBody = false;
+    private boolean isInInstruction = false;
+    private boolean isFunctionOnStack = false;
+    private boolean isNumberOnStack = false;
+
+    private FirstPhaseStack stack;
+    private Register register;
+    public CalculationListener(MatrixAggregator aggregator) {
+        this.aggregator = aggregator;
+        register = new Register(functionRegister,globalVariableRegister,localVariableRegister);
+    }
+
+    private ComplexDouble functionCall(String funName, ComplexDouble[] args){
+        var functions = functionRegister.get(new PredicateHeader(funName,new String[args.length]));
+        for (var p: functions) {
+            if(p.getKey().evaluate()){
+                //p.getValue().Call(args);
+                break;
+            }
+        }
+        return new ComplexDouble(0.0,0.0);
+    }
 
     public void showRegister(){
         System.out.println(functionRegister);
@@ -42,77 +68,28 @@ public class CalculationListener extends CalculatorBaseListener {
      *
      * @return Double
      */
-    public ComplexDouble getResult() {
-        return this.stack.pop();
-    }
-
-    @Override
-    public void enterReal_number(CalculatorParser.Real_numberContext ctx) {
-        super.enterReal_number(ctx);
-    }
-
-    @Override
-    public void exitReal_number(CalculatorParser.Real_numberContext ctx) {
-        super.exitReal_number(ctx);
-    }
-
-    @Override
-    public void enterSigned_real_number(CalculatorParser.Signed_real_numberContext ctx) {
-        super.enterSigned_real_number(ctx);
-    }
-
-    @Override
-    public void exitSigned_real_number(CalculatorParser.Signed_real_numberContext ctx) {
-        super.exitSigned_real_number(ctx);
-    }
 
     @Override
     public void enterComplex_number(CalculatorParser.Complex_numberContext ctx) {
         int count = ctx.getChildCount();
         if(count == 1){
             Double realPart = Double.parseDouble(ctx.getChild(0).getText());
-            //stack.push(new ComplexDouble(realPart,0.0));
+            stack.push(new ComplexDouble(realPart,0.0));
         }
         else if(count == 4){
             Double realPart = Double.parseDouble(ctx.getChild(0).getText());
             Double imaginaryPart;
             imaginaryPart = Double.parseDouble(ctx.getChild(2).getText());
             if(ctx.getChild(1).getText().equals("+")){
-                //stack.push(new ComplexDouble(realPart,imaginaryPart));
+                stack.push(new ComplexDouble(realPart,imaginaryPart));
             }else{
-                //stack.push(new ComplexDouble(realPart,-imaginaryPart));
+                stack.push(new ComplexDouble(realPart,-imaginaryPart));
             }
-
         }
     }
-
-    @Override
-    public void exitComplex_number(CalculatorParser.Complex_numberContext ctx) {
-    }
-
-    @Override
-    public void enterVariable(CalculatorParser.VariableContext ctx) {
-        //stack.push(ComplexDouble.add(stack.pop(),new ComplexDouble(1.0,0.0)));
-    }
-
-    @Override
-    public void exitVariable(CalculatorParser.VariableContext ctx) {
-        super.exitVariable(ctx);
-    }
-
-    @Override
-    public void enterVariables(CalculatorParser.VariablesContext ctx) {
-
-    }
-
-    @Override
-    public void exitVariables(CalculatorParser.VariablesContext ctx) {
-        super.exitVariables(ctx);
-    }
-
     @Override
     public void enterRight_assignments(CalculatorParser.Right_assignmentsContext ctx) {
-        super.enterRight_assignments(ctx);
+
     }
 
     @Override
@@ -122,10 +99,18 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction_call(CalculatorParser.Function_callContext ctx) {
+
         String functionName = ctx.getChild(0).getText();
         int length = 2;
         PredicateHeader header = new PredicateHeader(functionName, new String[length]);
         var patternMatchingList = functionRegister.get(header);
+        if(functionName.equals("plot")){
+            int x,y,z;
+            x = Integer.parseInt(ctx.getChild(2).getChild(0).getText());
+            y = Integer.parseInt(ctx.getChild(2).getChild(2).getChild(0).getText());
+            z = Integer.parseInt(ctx.getChild(2).getChild(2).getChild(2).getChild(0).getText());
+            aggregator.plot(x,y,z);
+        }
         if(patternMatchingList == null) return;
         for (var p:patternMatchingList) {
             if(p.getKey().evaluate()){
@@ -140,7 +125,14 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void exitFunction_call(CalculatorParser.Function_callContext ctx) {
-        super.exitFunction_call(ctx);
+
+        if(isInBody){
+            //check if it is standard function call
+            if(isInInstruction){
+                
+            }
+        }
+
         /*ComplexDouble b = stack.pop();
         ComplexDouble a = stack.pop();
         switch (ctx.getChild(0).getText()) {
@@ -172,27 +164,31 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterAssignment(CalculatorParser.AssignmentContext ctx) {
-        super.enterAssignment(ctx);
+
     }
 
     @Override
     public void exitAssignment(CalculatorParser.AssignmentContext ctx) {
-        super.exitAssignment(ctx);
+        var right = ctx.right_assignment();
+        String leftName = ctx.variable().getText();
+        Assignment assignment = new Assignment(register,leftName,stack.pop());
+        instructionStack.push(assignment);
+        //put on instruction stack
     }
 
     @Override
     public void enterInstruction(CalculatorParser.InstructionContext ctx) {
-        super.enterInstruction(ctx);
+        isInInstruction = true;
     }
 
     @Override
     public void exitInstruction(CalculatorParser.InstructionContext ctx) {
-        super.exitInstruction(ctx);
+        isInInstruction = false;
     }
 
     @Override
     public void enterInstructions(CalculatorParser.InstructionsContext ctx) {
-        super.enterInstructions(ctx);
+
     }
 
     @Override
@@ -202,13 +198,13 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void enterFunction_body(CalculatorParser.Function_bodyContext ctx) {
-        //parse instructions into Callable implementing class
+        isInBody = true;
 
     }
 
     @Override
     public void exitFunction_body(CalculatorParser.Function_bodyContext ctx) {
-        super.exitFunction_body(ctx);
+        isInBody = false;
     }
 
     @Override

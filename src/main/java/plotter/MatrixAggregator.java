@@ -1,3 +1,5 @@
+package plotter;
+
 import java.util.ArrayList;
 
 class MatrixElement {
@@ -15,7 +17,7 @@ public class MatrixAggregator {
     public ArrayList<ArrayList<MatrixElement>> matrix;
     public int size = 10;
 
-    MatrixAggregator() {
+    public MatrixAggregator() {
         matrix = new ArrayList<ArrayList<MatrixElement>>();
         for (int i = 0; i < size; i++) {
             matrix.add(new ArrayList<MatrixElement>());
@@ -45,11 +47,11 @@ public class MatrixAggregator {
         }
     }
 
-    void plot(int x, int y, int color) {
+    public void plot(int x, int y, int color) {
         setValue(x, y, new MatrixElement(color));
     }
 
-    void print() {
+    public void print() {
         for (var r : matrix) {
             for (var e : r) {
                 System.out.print(e.v + " ");
