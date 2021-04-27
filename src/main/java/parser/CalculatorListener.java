@@ -118,6 +118,26 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitRight_assignments(CalculatorParser.Right_assignmentsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#func_arg}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunc_arg(CalculatorParser.Func_argContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#func_arg}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunc_arg(CalculatorParser.Func_argContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#func_args}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunc_args(CalculatorParser.Func_argsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#func_args}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunc_args(CalculatorParser.Func_argsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#function_call}.
 	 * @param ctx the parse tree
 	 */

@@ -45,6 +45,7 @@ public class ListenerMain {
             walker.walk(listener, tree);
             aggregator.print();
             listener.showRegister();
+            listener.ListInstrucionStack();
 
         } catch (IOException e) {
             e.printStackTrace();

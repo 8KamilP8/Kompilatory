@@ -1,6 +1,5 @@
-
-plot(0,0,1);
-plot(0,1,1);
-plot(0,2,1);
-plot(0,3,1);
-plot(0,4,1);
+function ExampleFunction(a,b,c)
+{
+    c = +(a,b);
+    c = -(*(a,b),/(a,b));
+}

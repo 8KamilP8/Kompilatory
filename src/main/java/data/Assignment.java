@@ -25,4 +25,12 @@ public class Assignment extends Instruction {
         }
         register.localVariableRegister.put(varName,assignment.getValue());
     }
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "varName='" + varName + '\'' +
+                ", assignment=" + assignment +
+                '}';
+    }
 }

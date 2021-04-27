@@ -58,20 +58,23 @@ variable: NAME;
 
 variables: variable | variable ',' variables;
 right_assignments: right_assignment ',' right_assignments | right_assignment;
-function_call: NAME '(' right_assignments ')'
-                  | ADD '('right_assignment ',' right_assignment')'
-                  | MUL '('right_assignment ',' right_assignment')'
-                  | DIV '('right_assignment ',' right_assignment')'
-                  | SUB '('right_assignment ',' right_assignment')'
-                  | POW '('right_assignment ',' right_assignment')'
-                  | MOD '('right_assignment ',' right_assignment')'
-                  | ABS '('right_assignment ')'
-                  | SIN '('right_assignment ')'
-                  | COS '('right_assignment ')'
-                  | TAN '('right_assignment ')'
-                  | RealPart '('right_assignment ')'
-                  | ImaginaryPart '('right_assignment ')'
-                  | Successor'('right_assignment ')';
+func_arg: function_call | variable | complex_number | function_name;
+func_args: func_arg ',' func_args | func_arg;
+
+function_call: NAME '(' func_args ')'
+                  | ADD '('func_arg ',' func_arg')'
+                  | MUL '('func_arg ',' func_arg')'
+                  | DIV '('func_arg ',' func_arg')'
+                  | SUB '('func_arg ',' func_arg')'
+                  | POW '('func_arg ',' func_arg')'
+                  | MOD '('func_arg ',' func_arg')'
+                  | ABS '('func_arg ')'
+                  | SIN '('func_arg ')'
+                  | COS '('func_arg ')'
+                  | TAN '('func_arg ')'
+                  | RealPart '('func_arg ')'
+                  | ImaginaryPart '('func_arg ')'
+                  | Successor'('func_arg ')';
 
 right_assignment: function_call | variable | complex_number | function_name;
 assignment: variable WHITESPACE* '=' WHITESPACE* right_assignment;

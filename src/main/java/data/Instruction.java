@@ -10,4 +10,9 @@ public abstract class Instruction {
     }
 
     public abstract void Do();
+
+    @Override
+    public String toString() {
+        return "Instruction{}";
+    }
 }

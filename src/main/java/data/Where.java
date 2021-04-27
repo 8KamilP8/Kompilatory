@@ -9,4 +9,8 @@ public class Where {
         return Logic.eval(operationType,arg1.getValue(),arg2.getValue());
     }
 
+    @Override
+    public String toString() {
+        return "Where{}";
+    }
 }
