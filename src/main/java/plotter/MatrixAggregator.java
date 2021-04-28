@@ -11,7 +11,7 @@ class MatrixElement {
 }
 
 // lista wierszy
-public class MatrixAggregator {
+public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
@@ -47,8 +47,13 @@ public class MatrixAggregator {
         }
     }
 
+    @Override
+    public void plot(float x, float y, int v) {
+        setValue((int) (x), (int) (y), new MatrixElement(v));
+    }
+
     public void plot(int x, int y, int color) {
-        setValue(x, y, new MatrixElement(color));
+
     }
 
     public void print() {
