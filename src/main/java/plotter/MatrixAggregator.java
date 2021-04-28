@@ -1,5 +1,7 @@
 package plotter;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 class MatrixElement {
@@ -63,5 +65,31 @@ public class MatrixAggregator implements Plotter {
             }
             System.out.println("");
         }
+    }
+
+    public void toFile(String name) {
+        if (name == null)
+            name = "res";
+
+        FileWriter fileWriter = null;
+        PrintWriter printWriter = null;
+        try {
+            fileWriter = new FileWriter(name);
+            printWriter = new PrintWriter(fileWriter);
+            for (var r : matrix) {
+                for (var e : r) {
+                    printWriter.print(e.v + " ");
+                }
+                printWriter.println("");
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+        finally {
+            printWriter.close();
+        }
+
     }
 }
