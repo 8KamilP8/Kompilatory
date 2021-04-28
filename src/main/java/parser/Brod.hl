@@ -3,3 +3,10 @@ function ExampleFunction(a,b,c)
     c = +(a,b);
     c = -(*(a,b),/(a,b));
 }
+function Druga(x,y)
+{
+    a = +(x,y);
+    +(a,2);
+}
+x = 2;
+Druga(4,x);

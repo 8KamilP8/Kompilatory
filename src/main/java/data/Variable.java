@@ -1,22 +1,30 @@
 package data;
 
+import java.util.HashMap;
+
 public class Variable implements Argument {
     public String name;
-    public Register register;
+    public Register globalRegister;
+    public HashMap<String,ComplexDouble> localRegister = new HashMap<>();
     public Variable(String name, Register register) {
         this.name = name;
-        this.register = register;
+        this.globalRegister = register;
     }
 
     @Override
     public ComplexDouble getValue() {
         ComplexDouble value = new ComplexDouble(0.0,0.0);
-        if(register.localVariableRegister.containsKey(name)){
-            value = register.localVariableRegister.get(name);
-        }else if(register.globalVariableRegister.containsKey(name)){
-            value = register.globalVariableRegister.get(name);
+        if(localRegister.containsKey(name)){
+            value = localRegister.get(name);
+        }else if(globalRegister.globalVariableRegister.containsKey(name)){
+            value = globalRegister.globalVariableRegister.get(name);
         }
         return value;
+    }
+
+    @Override
+    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
+        localRegister = localVariableRegister;
     }
 
     @Override

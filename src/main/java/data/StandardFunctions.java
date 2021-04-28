@@ -1,15 +1,26 @@
 package data;
 
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class ComplexDouble implements Argument{
-    public Double realPart;
-    public Double imaginaryPart;
-
-    public ComplexDouble(Double realPart, Double imaginaryPart) {
-        this.realPart = realPart;
-        this.imaginaryPart = imaginaryPart;
+public class StandardFunctions {
+    public static Set<String> funcNames = Set.of("+","-","*","/");
+    public static ComplexDouble map(String name, ComplexDouble a, ComplexDouble b){
+        switch (name){
+            case "+":
+                return add(a,b);
+            case "-":
+                return sub(a,b);
+            case "*":
+                return mul(a,b);
+            case "/":
+                return div(a,b);
+        }
+        return new ComplexDouble(0.0,0.0);
     }
 
 
@@ -55,35 +66,5 @@ public class ComplexDouble implements Argument{
     public static ComplexDouble Im(ComplexDouble a){
         return new ComplexDouble(a.imaginaryPart,0.0);
     }
-    @Override
-    public String toString() {
-        return
-                "" + realPart +
-                " + " + imaginaryPart +
-                "i";
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ComplexDouble that = (ComplexDouble) o;
-        return Objects.equals(realPart, that.realPart) &&
-                Objects.equals(imaginaryPart, that.imaginaryPart);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(realPart, imaginaryPart);
-    }
-
-    @Override
-    public ComplexDouble getValue() {
-        return new ComplexDouble(realPart,imaginaryPart);
-    }
-
-    @Override
-    public void setLocalRegister(HashMap<String,ComplexDouble> localVariableRegister) {
-
-    }
 }

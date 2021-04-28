@@ -14,16 +14,20 @@ public class Assignment extends Instruction {
     }
 
     @Override
-    public void Do() {
-        if(register.localVariableRegister.containsKey(varName)){
-            register.localVariableRegister.put(varName,assignment.getValue());
-            return;
+    public ComplexDouble Do() {
+        assignment.setLocalRegister(localVariableRegister);
+        if(localVariableRegister.containsKey(varName)){
+            localVariableRegister.put(varName,assignment.getValue());
+
+            return assignment.getValue();
         }
         if(register.globalVariableRegister.containsKey(varName)){
             register.globalVariableRegister.put(varName,assignment.getValue());
-            return;
+            return assignment.getValue();
         }
-        register.localVariableRegister.put(varName,assignment.getValue());
+        localVariableRegister.put(varName,assignment.getValue());
+
+        return assignment.getValue();
     }
 
     @Override

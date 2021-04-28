@@ -20,6 +20,9 @@ public class PredicateHeader {
         return inputs[id];
     }
 
+    public String[] getInputs(){
+        return inputs;
+    }
     @Override
     public String toString() {
         return name + '(' + String.join(",",inputs) + ')' + '/' + inputs.length;

@@ -50,6 +50,10 @@ public class CalculationListener extends CalculatorBaseListener {
         stack = new FirstPhaseStack();
     }
 
+
+    public void RunStack(){
+        instructionStack.forEach(ins -> System.out.println(ins.Do()));
+    }
     private ComplexDouble functionCall(String funName, ComplexDouble[] args){
         var functions = functionRegister.get(new PredicateHeader(funName,new String[args.length]));
         for (var p: functions) {
@@ -140,22 +144,50 @@ public class CalculationListener extends CalculatorBaseListener {
     public void exitFunction_call(CalculatorParser.Function_callContext ctx) {
         if(ctx.getParent().getRuleIndex() == CalculatorParser.RULE_func_arg || ctx.getParent().getRuleIndex() == CalculatorParser.RULE_right_assignment){
             //as argument
+            String funName = ctx.getChild(0).getText();
+            if(StandardFunctions.funcNames.contains(funName)){
+                int argsNum = 2;
+                Argument[] args = new Argument[argsNum];
+                for(int i =argsNum-1; i>=0;i--){
 
-            int argsNum=getVariablesTreeHeight(ctx.getChild(2));
-            Argument[] args = new Argument[argsNum];
-            for(int i =0; i<argsNum;i++){
-                args[i] = stack.pop();
+                    args[i] = stack.pop();
+                }
+                var fun = new FunctionCallHeader(funName,args,register);
+                stack.push(fun);
             }
-            var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register);
-            stack.push(fun);
+            else{
+                int argsNum=getVariablesTreeHeight(ctx.getChild(2));
+                Argument[] args = new Argument[argsNum];
+                for(int i =argsNum-1; i>=0;i--){
+
+                    args[i] = stack.pop();
+                }
+                var fun = new FunctionCallHeader(funName,args,register);
+                stack.push(fun);
+            }
+
         }else if (ctx.getParent().getRuleIndex() == CalculatorParser.RULE_instruction){
-            int argsNum=getVariablesTreeHeight(ctx.getChild(2));
-            Argument[] args = new Argument[argsNum];
-            for(int i =0; i<argsNum;i++){
-                args[i] = stack.pop();
+            String funName = ctx.getChild(0).getText();
+            if(StandardFunctions.funcNames.contains(funName)){
+                int argsNum = 2;
+                Argument[] args = new Argument[argsNum];
+                for(int i =argsNum-1; i>=0;i--){
+
+                    args[i] = stack.pop();
+                }
+                var fun = new FunctionCallHeader(funName,args,register);
+                instructionStack.push(fun);
+            }else{
+                int argsNum = getVariablesTreeHeight(ctx.getChild(2));
+                Argument[] args = new Argument[argsNum];
+                for(int i =argsNum-1; i>=0;i--){
+
+                    args[i] = stack.pop();
+                }
+                var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register);
+                instructionStack.push(fun);
             }
-            var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register);
-            instructionStack.push(fun);
+
         }
 
         /*ComplexDouble b = stack.pop();
@@ -233,7 +265,7 @@ public class CalculationListener extends CalculatorBaseListener {
         isInBody = false;
         var funcBody = new FunctionBody();
         while(!instructionStack.empty()){
-            funcBody.instructions.add(instructionStack.pop());
+            funcBody.instructions.add(0,instructionStack.pop());
         }
         int height = getVariablesTreeHeight(ctx.parent.getChild(4));
         String[] names = new String[height];
@@ -248,7 +280,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
         //functionRegister.put(new PredicateHeader(ctx.parent.getChild(1).getText(), names),);
         //functionRegister.put();
-        functionRegister.get(new PredicateHeader(ctx.parent.getChild(1).getText(),names)).add(new Pair<>(new Where(),funcBody));
+        functionRegister.get(new PredicateHeader(ctx.parent.getChild(2).getText(),names)).add(new Pair<>(new Where(),funcBody));
     }
 
     @Override
@@ -263,7 +295,7 @@ public class CalculationListener extends CalculatorBaseListener {
             }
             names[height-1] = tree.getChild(0).getText();
         }
-        functionRegister.put(new PredicateHeader(ctx.getChild(1).getText(),names),new ArrayList<Pair<Where,FunctionBody>>());
+        functionRegister.put(new PredicateHeader(ctx.getChild(2).getText(),names),new ArrayList<Pair<Where,FunctionBody>>());
 
     }
     private int getVariablesTreeHeight(ParseTree child){

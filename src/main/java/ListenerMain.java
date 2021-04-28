@@ -46,6 +46,7 @@ public class ListenerMain {
             aggregator.print();
             listener.showRegister();
             listener.ListInstrucionStack();
+            listener.RunStack();
 
         } catch (IOException e) {
             e.printStackTrace();
