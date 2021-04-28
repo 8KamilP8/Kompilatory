@@ -8,5 +8,6 @@ function Druga(x,y)
     a = +(x,y);
     +(a,2);
 }
-x = 2;
+x = 2+1i;
+
 Druga(4,x);

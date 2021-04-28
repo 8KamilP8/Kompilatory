@@ -229,7 +229,8 @@ public class CalculationListener extends CalculatorBaseListener {
     @Override
     public void exitAssignment(CalculatorParser.AssignmentContext ctx) {
         String leftName = ctx.variable().getText();
-        Assignment assignment = new Assignment(register,leftName,stack.pop());
+        boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction;
+        Assignment assignment = new Assignment(register,leftName,stack.pop(),b);
         instructionStack.push(assignment);
         //put on instruction stack
     }
