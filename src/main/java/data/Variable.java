@@ -28,9 +28,12 @@ public class Variable implements Argument {
     }
 
     @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    @Override
     public String toString() {
-        return "Variable{" +
-                 name +
-                '}';
+        return name;
     }
 }

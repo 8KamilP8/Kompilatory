@@ -86,4 +86,9 @@ public class ComplexDouble implements Argument{
     public void setLocalRegister(HashMap<String,ComplexDouble> localVariableRegister) {
 
     }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 }

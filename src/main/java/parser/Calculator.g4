@@ -33,7 +33,7 @@ WHERE: 'where';
 AND: '&';
 OR: '|';
 NOT: '!';
-start : program_elements WHITESPACE*;
+start : WHITESPACE* program_elements WHITESPACE*;
 pattern_matching : logic_function_name '(' pattern_matching_arg ',' pattern_matching_arg ')' | NOT '(' pattern_matching_arg ')';
 
 logic_function_name :  OR | AND | Equal | GreaterEqual | LowerEqual | Lower | Greater | NotEqual;
@@ -49,11 +49,10 @@ complex_number : signed_real_number | signed_real_number '+' real_number 'i' | s
 NAME : [a-zA-Z]+[a-zA-Z0-9]*;
 WHITESPACE: [ \r\n\t]+;
 COMMENT
-    : '/*' .*? '*/' -> skip
-;
+    : '/*' .*? '*/';
 LINE_COMMENT
-    : '//' ~[\r\n]* -> skip
-;
+    : '#' ~( '\r' | '\n' )*;
+
 variable: NAME;
 
 variables: variable | variable ',' variables;
@@ -86,4 +85,4 @@ function : FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE WHERE'(' patte
 program_instructions: program_instruction WHITESPACE program_instructions | program_instruction;
 program_instruction: instruction;
 program_elements: program_element WHITESPACE program_elements | program_element;
-program_element : function | program_instructions;
+program_element : function | program_instructions | COMMENT | LINE_COMMENT;

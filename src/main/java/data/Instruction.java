@@ -19,4 +19,7 @@ public abstract class Instruction {
     public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
         this.localVariableRegister = localVariableRegister;
     }
+
+    public abstract boolean check();
+    public abstract String getHeader();
 }

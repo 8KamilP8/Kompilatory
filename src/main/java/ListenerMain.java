@@ -47,10 +47,13 @@ public class ListenerMain {
             listener.showRegister();
             listener.ListInstrucionStack();
             System.out.println("RUNNING.....................");
-            listener.RunStack();
-            //aggregator.print();
-            aggregator.toFile("output");
-            listener.showGlobalRegister();
+            if(listener.CheckInstructionStack()){
+                listener.RunStack();
+                //aggregator.print();
+                aggregator.toFile("output");
+
+                listener.showGlobalRegister();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

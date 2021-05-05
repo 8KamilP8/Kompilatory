@@ -1,15 +1,24 @@
+x=1.5;
+Druga(x,2);
+Druga(1,3,x);
+/*+(x,0);
+        to jest komentarz wiel
+aosjkdoaijs
+askirjqiojr
+*/
++(x,0);
+
 function Druga(z,y)
 {
     z = -(x,y);
 }
+#x=6;
 function Druga(x1,y,z)
 {
     x = -(8,0);
 }
-x=6;
-Druga(x,2);
-+(x,0);
-x=Druga(x,2);
-+(x,0);
+
+
+
 
 

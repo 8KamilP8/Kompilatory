@@ -41,9 +41,16 @@ public class Assignment extends Instruction {
 
     @Override
     public String toString() {
-        return "Assignment{" +
-                "varName='" + varName + '\'' +
-                ", assignment=" + assignment +
-                '}';
+        return  varName + " = " + assignment;
+    }
+
+    @Override
+    public boolean check() {
+        return assignment.isValid();
+    }
+
+    @Override
+    public String getHeader() {
+        return varName + "=" + assignment;
     }
 }

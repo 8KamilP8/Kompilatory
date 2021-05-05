@@ -16,10 +16,6 @@ public class PredicateHeader {
         return name;
     }
 
-    public String getInputsCount(int id) {
-        return inputs[id];
-    }
-
     public String[] getInputs(){
         return inputs;
     }

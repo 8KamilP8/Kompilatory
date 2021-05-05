@@ -50,6 +50,15 @@ public class CalculationListener extends CalculatorBaseListener {
         stack = new FirstPhaseStack();
     }
 
+    public boolean CheckInstructionStack(){
+        var result = true;
+        for (var ins : instructionStack) {
+            if(!ins.check()){
+                result = false;
+            }
+        }
+        return result;
+    }
 
     public void RunStack(){
         instructionStack.forEach(ins -> System.out.println(ins.toString() + "   ->  " + ins.Do()));
@@ -180,6 +189,10 @@ public class CalculationListener extends CalculatorBaseListener {
                 }
                 var fun = new FunctionCallHeader(funName,args,register,aggregator);
                 instructionStack.push(fun);
+                if(ctx.getParent().getParent().getRuleIndex() == CalculatorParser.RULE_program_instruction){
+                    mainInstructionStackNum++;
+                }
+
             }else{
                 int argsNum = getVariablesTreeHeight(ctx.getChild(2));
                 Argument[] args = new Argument[argsNum];
@@ -189,6 +202,9 @@ public class CalculationListener extends CalculatorBaseListener {
                 }
                 var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register,aggregator);
                 instructionStack.push(fun);
+                if(ctx.getParent().getParent().getRuleIndex() == CalculatorParser.RULE_program_instruction){
+                    mainInstructionStackNum++;
+                }
             }
 
         }
@@ -233,8 +249,8 @@ public class CalculationListener extends CalculatorBaseListener {
     public void exitAssignment(CalculatorParser.AssignmentContext ctx) {
         String leftName = ctx.variable().getText();
         boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction;
-        System.out.println(b);
         Assignment assignment = new Assignment(register,leftName,stack.pop(),b);
+        if(b) mainInstructionStackNum++;
         instructionStack.push(assignment);
         //put on instruction stack
     }
@@ -259,6 +275,7 @@ public class CalculationListener extends CalculatorBaseListener {
         super.exitInstructions(ctx);
     }
 
+    private int mainInstructionStackNum = 0;
     @Override
     public void enterFunction_body(CalculatorParser.Function_bodyContext ctx) {
         isInBody = true;
@@ -269,7 +286,7 @@ public class CalculationListener extends CalculatorBaseListener {
     public void exitFunction_body(CalculatorParser.Function_bodyContext ctx) {
         isInBody = false;
         var funcBody = new FunctionBody();
-        while(!instructionStack.empty()){
+        while(instructionStack.size() > mainInstructionStackNum){
             funcBody.instructions.add(0,instructionStack.pop());
         }
         int height = getVariablesTreeHeight(ctx.parent.getChild(4));

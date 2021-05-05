@@ -32,6 +32,34 @@ public class FunctionCallHeader extends Instruction implements Argument {
     }
 
     @Override
+    public boolean isValid() {
+        return check();
+    }
+
+    @Override
+    public boolean check() {
+        boolean correctName =  StandardFunctions.funcNames.contains(funcName) ||
+                funcName.equals("plot") ||
+                register.functionRegister.containsKey(new PredicateHeader(funcName,new String[args.length]));
+        if(!correctName) {
+            System.out.println("Cannot resolve: " + toString());
+            return false;
+        }
+        for (var arg: args) {
+            if(!arg.isValid()){
+                return false;
+            }
+        }
+
+        return  true;
+    }
+
+    @Override
+    public String getHeader() {
+        return toString();
+    }
+
+    @Override
     public ComplexDouble Do() {
 
         if(StandardFunctions.funcNames.contains(funcName)){
@@ -79,9 +107,17 @@ public class FunctionCallHeader extends Instruction implements Argument {
     }
     @Override
     public String toString() {
-        return "FunctionCallHeader{" +
-                "funcName='" + funcName + '\'' +
-                ", args=" + Arrays.toString(args) +
-                '}';
+        var str = new StringBuilder();
+        str.append(funcName).append('(');
+        for (var arg: args) {
+            str.append(arg.toString());
+            str.append(", ");
+        }
+        var last = str.lastIndexOf(", ");
+        str.deleteCharAt(last+1);
+        str.deleteCharAt(last);
+        str.append(')');
+        return str.toString();
+
     }
 }
