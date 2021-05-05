@@ -28,9 +28,7 @@ public class StandardFunctions {
         return new ComplexDouble(a.realPart+b.realPart, a.imaginaryPart+b.imaginaryPart);
     }
     public static ComplexDouble sub(ComplexDouble a, ComplexDouble b){
-        b.imaginaryPart *= -1;
-        b.realPart *= -1;
-        return  add(a, b);
+        return  add(a, new ComplexDouble(-b.realPart,-b.imaginaryPart));
     }
     public static ComplexDouble mul(ComplexDouble a, ComplexDouble b){
         ComplexDouble result;

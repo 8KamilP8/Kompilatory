@@ -1,5 +1,8 @@
 package data;
 
+import plotter.MatrixAggregator;
+import plotter.Plotter;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -9,11 +12,13 @@ public class FunctionCallHeader extends Instruction implements Argument {
     public Argument[] args;
     public Register register;
     public HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
-    public FunctionCallHeader(String funcName, Argument[] args, Register register) {
+    public Plotter plotter;
+    public FunctionCallHeader(String funcName, Argument[] args, Register register, Plotter plotter) {
         super(register);
         this.funcName = funcName;
         this.args = args;
         this.register = register;
+        this.plotter = plotter;
     }
 
     @Override
@@ -34,7 +39,11 @@ public class FunctionCallHeader extends Instruction implements Argument {
             args[1].setLocalRegister(localVariableRegister);
             putHeaderVariablesIntoRegister(localVariableRegister);
             return StandardFunctions.map(funcName,args[0].getValue(), args[1].getValue());
-        }else{
+        }else if(funcName.equals("plot")){
+            plotter.plot(args[0].getValue().realPart.floatValue(),args[1].getValue().realPart.floatValue(), (args[2].getValue().realPart).intValue());
+            return new ComplexDouble(args[0].getValue().realPart,args[1].getValue().realPart);
+        }
+        else{
             FunctionBody body = register.functionRegister.get(new PredicateHeader(funcName,new String[args.length])).get(0).getValue();
             AtomicReference<ComplexDouble> returnVal = new AtomicReference<>(new ComplexDouble(0.0, 0.0));
             putHeaderVariablesIntoRegister(localVariableRegister);
@@ -52,7 +61,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
         PredicateHeader ph = new PredicateHeader("",null);
 
         for(var key : keySet){
-            if(key.getName().equals(funcName)){
+            if(key.equals(new PredicateHeader(funcName,new String[args.length]))){
                 ph = key;
             }
         }

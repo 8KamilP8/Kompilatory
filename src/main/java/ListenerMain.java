@@ -43,14 +43,17 @@ public class ListenerMain {
             var listener = new CalculationListener(aggregator);
 
             walker.walk(listener, tree);
-            aggregator.print();
+
             listener.showRegister();
             listener.ListInstrucionStack();
+            System.out.println("RUNNING.....................");
             listener.RunStack();
+            //aggregator.print();
+            aggregator.toFile("output");
+            listener.showGlobalRegister();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

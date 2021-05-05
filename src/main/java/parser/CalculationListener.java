@@ -52,7 +52,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
 
     public void RunStack(){
-        instructionStack.forEach(ins -> System.out.println(ins.Do()));
+        instructionStack.forEach(ins -> System.out.println(ins.toString() + "   ->  " + ins.Do()));
     }
     private ComplexDouble functionCall(String funName, ComplexDouble[] args){
         var functions = functionRegister.get(new PredicateHeader(funName,new String[args.length]));
@@ -70,6 +70,9 @@ public class CalculationListener extends CalculatorBaseListener {
     }
     public void showRegister(){
         System.out.println(functionRegister);
+    }
+    public void showGlobalRegister(){
+        System.out.println(register.globalVariableRegister);
     }
     /**
      * The last value on the stack is the result of all
@@ -152,7 +155,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
                     args[i] = stack.pop();
                 }
-                var fun = new FunctionCallHeader(funName,args,register);
+                var fun = new FunctionCallHeader(funName,args,register,aggregator);
                 stack.push(fun);
             }
             else{
@@ -162,7 +165,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
                     args[i] = stack.pop();
                 }
-                var fun = new FunctionCallHeader(funName,args,register);
+                var fun = new FunctionCallHeader(funName,args,register,aggregator);
                 stack.push(fun);
             }
 
@@ -175,7 +178,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
                     args[i] = stack.pop();
                 }
-                var fun = new FunctionCallHeader(funName,args,register);
+                var fun = new FunctionCallHeader(funName,args,register,aggregator);
                 instructionStack.push(fun);
             }else{
                 int argsNum = getVariablesTreeHeight(ctx.getChild(2));
@@ -184,7 +187,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
                     args[i] = stack.pop();
                 }
-                var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register);
+                var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register,aggregator);
                 instructionStack.push(fun);
             }
 
@@ -230,6 +233,7 @@ public class CalculationListener extends CalculatorBaseListener {
     public void exitAssignment(CalculatorParser.AssignmentContext ctx) {
         String leftName = ctx.variable().getText();
         boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction;
+        System.out.println(b);
         Assignment assignment = new Assignment(register,leftName,stack.pop(),b);
         instructionStack.push(assignment);
         //put on instruction stack

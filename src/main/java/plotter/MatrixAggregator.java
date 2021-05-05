@@ -17,7 +17,7 @@ public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
-    public int size = 10;
+    public int size = 64;
 
     public MatrixAggregator() {
         matrix = new ArrayList<ArrayList<MatrixElement>>();
@@ -54,9 +54,6 @@ public class MatrixAggregator implements Plotter {
         setValue((int) (x), (int) (y), new MatrixElement(v));
     }
 
-    public void plot(int x, int y, int color) {
-
-    }
 
     public void print() {
         for (var r : matrix) {

@@ -1,13 +1,15 @@
-function ExampleFunction(a,b,c)
+function Druga(z,y)
 {
-    c = +(a,b);
-    c = -(*(a,b),/(a,b));
+    z = -(x,y);
 }
-function Druga(x,y)
+function Druga(x1,y,z)
 {
-    a = +(x,y);
-    +(a,2);
+    x = -(8,0);
 }
-x = 2+1i;
+x=6;
+Druga(x,2);
++(x,0);
+x=Druga(x,2);
++(x,0);
 
-Druga(4,x);
+

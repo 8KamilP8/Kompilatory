@@ -20,8 +20,9 @@ public class Assignment extends Instruction {
 
         if(global){
             assignment.setLocalRegister(register.globalVariableRegister);
-            register.globalVariableRegister.put(varName,assignment.getValue());
-            return assignment.getValue();
+            var ass = assignment.getValue();
+            register.globalVariableRegister.put(varName,ass);
+            return ass;
         }
         assignment.setLocalRegister(localVariableRegister);
         if(localVariableRegister.containsKey(varName)){
