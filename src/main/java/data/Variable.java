@@ -13,7 +13,7 @@ public class Variable implements Argument {
 
     @Override
     public ComplexDouble getValue() {
-        ComplexDouble value = new ComplexDouble(0.0,0.0);
+        ComplexDouble value = ComplexDouble.zero();
         if(localRegister.containsKey(name)){
             value = localRegister.get(name);
         }else if(globalRegister.globalVariableRegister.containsKey(name)){

@@ -12,9 +12,10 @@ public class FunctionBody {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("Body{");
+        StringBuilder builder = new StringBuilder("Body{\n");
         for (var inst: instructions) {
-            builder.append(inst.toString());
+            builder.append("    " + inst.toString());
+            builder.append('\n');
         }
         builder.append('}');
         return builder.toString();

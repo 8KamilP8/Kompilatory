@@ -1,29 +1,11 @@
 package data;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import wrappers.StandardFunctionsMap;
+
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class StandardFunctions {
-    public static Set<String> funcNames = Set.of("+","-","*","/");
-    public static ComplexDouble map(String name, ComplexDouble a, ComplexDouble b){
-        switch (name){
-            case "+":
-                return add(a,b);
-            case "-":
-                return sub(a,b);
-            case "*":
-                return mul(a,b);
-            case "/":
-                return div(a,b);
-        }
-        return new ComplexDouble(0.0,0.0);
-    }
-
-
+    public static StandardFunctionsMap map = new StandardFunctionsMap();
     public static ComplexDouble add(ComplexDouble a, ComplexDouble b){
         return new ComplexDouble(a.realPart+b.realPart, a.imaginaryPart+b.imaginaryPart);
     }
@@ -52,7 +34,7 @@ public class StandardFunctions {
     public static ComplexDouble sin(ComplexDouble a){
         return new ComplexDouble(Math.sin(a.realPart),0.0);
     }
-    public static  ComplexDouble cos(ComplexDouble a){
+    public static ComplexDouble cos(ComplexDouble a){
         return new ComplexDouble(Math.cos(a.realPart),0.0);
     }
     public static ComplexDouble tan(ComplexDouble a){

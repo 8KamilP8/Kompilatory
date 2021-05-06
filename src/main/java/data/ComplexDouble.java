@@ -12,6 +12,15 @@ public class ComplexDouble implements Argument{
         this.imaginaryPart = imaginaryPart;
     }
 
+    public static ComplexDouble one() {
+        return new ComplexDouble(1.0,0.0);
+    }
+    public static ComplexDouble zero() {
+        return new ComplexDouble(0.0,0.0);
+    }
+    public static ComplexDouble i() {
+        return new ComplexDouble(0.0,1.0);
+    }
 
     public static ComplexDouble add(ComplexDouble a, ComplexDouble b){
         return new ComplexDouble(a.realPart+b.realPart, a.imaginaryPart+b.imaginaryPart);
@@ -58,9 +67,9 @@ public class ComplexDouble implements Argument{
     @Override
     public String toString() {
         return
-                "" + realPart +
-                " + " + imaginaryPart +
-                "i";
+                "" + realPart;// +
+                //" + " + imaginaryPart +
+                //"i";
     }
 
     @Override

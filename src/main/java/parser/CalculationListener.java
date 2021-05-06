@@ -44,6 +44,10 @@ public class CalculationListener extends CalculatorBaseListener {
 
     private FirstPhaseStack stack;
     private Register register;
+    private int mainInstructionStackNum = 0;
+    private String currentFunctionName = "";
+    private Where lastWhere = Where.empty();
+
     public CalculationListener(MatrixAggregator aggregator) {
         this.aggregator = aggregator;
         register = new Register(functionRegister,globalVariableRegister,localVariableRegister);
@@ -61,19 +65,10 @@ public class CalculationListener extends CalculatorBaseListener {
     }
 
     public void RunStack(){
-        instructionStack.forEach(ins -> System.out.println(ins.toString() + "   ->  " + ins.Do()));
+        instructionStack.forEach(ins -> System.out.println(ins.toString() +   " -> " + ins.Do()));
     }
-    private ComplexDouble functionCall(String funName, ComplexDouble[] args){
-        var functions = functionRegister.get(new PredicateHeader(funName,new String[args.length]));
-        for (var p: functions) {
-            if(p.getKey().evaluate()){
-                //p.getValue().Call(args);
-                break;
-            }
-        }
-        return new ComplexDouble(0.0,0.0);
-    }
-    public void ListInstrucionStack(){
+
+    public void ListInstructionsStack(){
         System.out.println("Instrucion Stack: ");
         instructionStack.forEach(e-> System.out.println(e.toString()));
     }
@@ -157,7 +152,7 @@ public class CalculationListener extends CalculatorBaseListener {
         if(ctx.getParent().getRuleIndex() == CalculatorParser.RULE_func_arg || ctx.getParent().getRuleIndex() == CalculatorParser.RULE_right_assignment){
             //as argument
             String funName = ctx.getChild(0).getText();
-            if(StandardFunctions.funcNames.contains(funName)){
+            if(StandardFunctions.map.contains(funName)){
                 int argsNum = 2;
                 Argument[] args = new Argument[argsNum];
                 for(int i =argsNum-1; i>=0;i--){
@@ -180,7 +175,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
         }else if (ctx.getParent().getRuleIndex() == CalculatorParser.RULE_instruction){
             String funName = ctx.getChild(0).getText();
-            if(StandardFunctions.funcNames.contains(funName)){
+            if(StandardFunctions.map.contains(funName)){
                 int argsNum = 2;
                 Argument[] args = new Argument[argsNum];
                 for(int i =argsNum-1; i>=0;i--){
@@ -197,7 +192,6 @@ public class CalculationListener extends CalculatorBaseListener {
                 int argsNum = getVariablesTreeHeight(ctx.getChild(2));
                 Argument[] args = new Argument[argsNum];
                 for(int i =argsNum-1; i>=0;i--){
-
                     args[i] = stack.pop();
                 }
                 var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,register,aggregator);
@@ -209,39 +203,6 @@ public class CalculationListener extends CalculatorBaseListener {
 
         }
 
-        /*ComplexDouble b = stack.pop();
-        ComplexDouble a = stack.pop();
-        switch (ctx.getChild(0).getText()) {
-            case "+":
-                stack.push(ComplexDouble.add(a, b));
-                break;
-            case "-":
-                stack.push(ComplexDouble.sub(a, b));
-                break;
-            case "*":
-                stack.push(ComplexDouble.mul(a, b));
-                break;
-            case "/":
-                stack.push(ComplexDouble.div(a, b));
-                break;
-        }*/
-
-    }
-    @Override public void enterFunc_arg(CalculatorParser.Func_argContext ctx) {
-
-    }
-    @Override
-    public void enterRight_assignment(CalculatorParser.Right_assignmentContext ctx) {
-
-    }
-
-    @Override
-    public void exitRight_assignment(CalculatorParser.Right_assignmentContext ctx) {
-        super.exitRight_assignment(ctx);
-    }
-
-    @Override
-    public void enterAssignment(CalculatorParser.AssignmentContext ctx) {
 
     }
 
@@ -252,7 +213,6 @@ public class CalculationListener extends CalculatorBaseListener {
         Assignment assignment = new Assignment(register,leftName,stack.pop(),b);
         if(b) mainInstructionStackNum++;
         instructionStack.push(assignment);
-        //put on instruction stack
     }
 
     @Override
@@ -266,16 +226,11 @@ public class CalculationListener extends CalculatorBaseListener {
     }
 
     @Override
-    public void enterInstructions(CalculatorParser.InstructionsContext ctx) {
-
-    }
-
-    @Override
     public void exitInstructions(CalculatorParser.InstructionsContext ctx) {
         super.exitInstructions(ctx);
     }
 
-    private int mainInstructionStackNum = 0;
+
     @Override
     public void enterFunction_body(CalculatorParser.Function_bodyContext ctx) {
         isInBody = true;
@@ -300,13 +255,13 @@ public class CalculationListener extends CalculatorBaseListener {
             names[height-1] = tree.getChild(0).getText();
         }
 
-        //functionRegister.put(new PredicateHeader(ctx.parent.getChild(1).getText(), names),);
-        //functionRegister.put();
-        functionRegister.get(new PredicateHeader(ctx.parent.getChild(2).getText(),names)).add(new Pair<>(new Where(),funcBody));
+        functionRegister.get(new PredicateHeader(currentFunctionName,names)).add(new Pair<>(lastWhere,funcBody));
     }
 
     @Override
     public void enterFunction(CalculatorParser.FunctionContext ctx) {
+        lastWhere = Where.empty();
+        currentFunctionName = ctx.getChild(2).getText();
         int height = getVariablesTreeHeight(ctx.getChild(4));
         String[] names = new String[height];
         if(height > 0 ){
@@ -317,7 +272,10 @@ public class CalculationListener extends CalculatorBaseListener {
             }
             names[height-1] = tree.getChild(0).getText();
         }
-        functionRegister.put(new PredicateHeader(ctx.getChild(2).getText(),names),new ArrayList<Pair<Where,FunctionBody>>());
+        var header = new PredicateHeader(currentFunctionName,names);
+        if(!functionRegister.containsKey(header)){
+            functionRegister.put(new PredicateHeader(currentFunctionName,names),new ArrayList<Pair<Where,FunctionBody>>());
+        }
 
     }
     private int getVariablesTreeHeight(ParseTree child){
@@ -332,19 +290,8 @@ public class CalculationListener extends CalculatorBaseListener {
 
 
     @Override
-    public void exitFunction(CalculatorParser.FunctionContext ctx) {
-        //register.put(ctx.getChild(2).getText(),stack.pop().realPart.intValue());
-    }
+    public void exitFunction(CalculatorParser.FunctionContext ctx) { }
 
-    @Override
-    public void enterStart(CalculatorParser.StartContext ctx) {
-        super.enterStart(ctx);
-    }
-
-    @Override
-    public void exitStart(CalculatorParser.StartContext ctx) {
-        super.exitStart(ctx);
-    }
 
     @Override
     public void enterProgram_elements(CalculatorParser.Program_elementsContext ctx) {
@@ -385,5 +332,16 @@ public class CalculationListener extends CalculatorBaseListener {
     @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
+    }
+
+    @Override public void enterPattern_matching(CalculatorParser.Pattern_matchingContext ctx) {
+
+    }
+
+    @Override public void exitPattern_matching(CalculatorParser.Pattern_matchingContext ctx) {
+        String logicOperationName = ctx.getChild(0).getText();
+        var arg2 = stack.pop();
+        var arg1 = stack.pop();
+        lastWhere = new Where(Logic.map.getType(logicOperationName), arg1,arg2);
     }
 }

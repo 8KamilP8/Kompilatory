@@ -1,24 +1,61 @@
-x=1.5;
-Druga(x,2);
-Druga(1,3,x);
-/*+(x,0);
-        to jest komentarz wiel
-aosjkdoaijs
-askirjqiojr
+/*
+function pattern(x,y) where(>=(x,5))
+{
+    +(x,y);
+}
+function pattern(x,y) where(<(x,2))
+{
+    -(x,y);
+}
+function pattern(x,y)
+{
+    *(x,y);
+}
+pattern(3,1);
+#expected: 3
+
+pattern(1,1);
+#expected: 0
+
+pattern(5,1);
+#expected: 6
 */
-+(x,0);
-
-function Druga(z,y)
+function r(x) where(>(x,1))
 {
-    z = -(x,y);
+    +(1,-(x,1));
 }
-#x=6;
-function Druga(x1,y,z)
+function r(x)
 {
-    x = -(8,0);
+    +(1,0);
 }
+r(5);
+/*
+function a(x)
+{
+    c(x);
+}
+function b(x)
+{
+    c(x);
+}
+function c(z)
+{
+    +(z,z);
+}
+*/
+# r(5) = +(1,r(4))
+# r(4) = +(1,r(3))
+# r(3) = +(1,r(2))
+# r(2) = +(1,r(1))
+# r(1) = 1
+#a(2);
 
-
-
-
-
+function factorial(x) where(>(x,1))
+{
+    *(x,factorial(-(x,1)));
+}
+function factorial(x)
+{
+    +(1,0);
+}
+factorial(5);

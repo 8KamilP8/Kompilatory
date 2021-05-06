@@ -11,7 +11,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
     public String funcName;
     public Argument[] args;
     public Register register;
-    public HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
+    private HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
     public Plotter plotter;
     public FunctionCallHeader(String funcName, Argument[] args, Register register, Plotter plotter) {
         super(register);
@@ -27,8 +27,13 @@ public class FunctionCallHeader extends Instruction implements Argument {
     }
 
     @Override
-    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
-        this.localVariableRegister = localVariableRegister;
+    public void setLocalRegister(HashMap<String, ComplexDouble> localRegister) {
+        this.localVariableRegister = localRegister;
+        for (var arg:
+             args) {
+            arg.setLocalRegister(localRegister);
+
+        }
     }
 
     @Override
@@ -38,7 +43,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
 
     @Override
     public boolean check() {
-        boolean correctName =  StandardFunctions.funcNames.contains(funcName) ||
+        boolean correctName =  StandardFunctions.map.contains(funcName) ||
                 funcName.equals("plot") ||
                 register.functionRegister.containsKey(new PredicateHeader(funcName,new String[args.length]));
         if(!correctName) {
@@ -61,28 +66,41 @@ public class FunctionCallHeader extends Instruction implements Argument {
 
     @Override
     public ComplexDouble Do() {
-
-        if(StandardFunctions.funcNames.contains(funcName)){
+        if(StandardFunctions.map.contains(funcName)){
             args[0].setLocalRegister(localVariableRegister);
             args[1].setLocalRegister(localVariableRegister);
             putHeaderVariablesIntoRegister(localVariableRegister);
-            return StandardFunctions.map(funcName,args[0].getValue(), args[1].getValue());
+            var val = StandardFunctions.map.mapAndEvaluate(funcName,args[0].getValue(), args[1].getValue());
+            return val;
         }else if(funcName.equals("plot")){
             plotter.plot(args[0].getValue().realPart.floatValue(),args[1].getValue().realPart.floatValue(), (args[2].getValue().realPart).intValue());
             return new ComplexDouble(args[0].getValue().realPart,args[1].getValue().realPart);
         }
         else{
-            FunctionBody body = register.functionRegister.get(new PredicateHeader(funcName,new String[args.length])).get(0).getValue();
+
             AtomicReference<ComplexDouble> returnVal = new AtomicReference<>(new ComplexDouble(0.0, 0.0));
             putHeaderVariablesIntoRegister(localVariableRegister);
+            FunctionBody body = getBody();
             body.instructions.forEach(ins -> {
                 ins.setLocalRegister(localVariableRegister);
-                returnVal.set(ins.Do());
+                var val = ins.Do();
+                returnVal.set(val);
             });
             localVariableRegister.clear();
             return returnVal.get();
         }
 
+    }
+    private FunctionBody getBody(){
+        var bodiesCollection = register.functionRegister.get(new PredicateHeader(funcName,new String[args.length]));
+        for(var pair : bodiesCollection){
+            var where = pair.getKey();
+            where.setRegister(localVariableRegister);
+            if(where.evaluate()){
+                return pair.getValue();
+            }
+        }
+        return null;
     }
     private void putHeaderVariablesIntoRegister(HashMap<String,ComplexDouble> register){
         var keySet = this.register.functionRegister.keySet();
@@ -96,13 +114,12 @@ public class FunctionCallHeader extends Instruction implements Argument {
         if(ph.getInputs() != null){
             String[] inputNames = ph.getInputs();
             for (int i =0; i< inputNames.length; i++) {
-                register.put(inputNames[i], args[i].getValue());
+                var value = args[i].getValue();
+                var key = inputNames[i];
+                register.put(key, value);
             }
         }
-        else{
-            //standard function:
-            StandardFunctions.map(funcName,args[0].getValue(),args[1].getValue());
-        }
+        //System.out.println(funcName + " -> reg: " + localVariableRegister.toString());
 
     }
     @Override

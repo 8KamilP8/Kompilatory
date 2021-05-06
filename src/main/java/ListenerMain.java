@@ -45,7 +45,7 @@ public class ListenerMain {
             walker.walk(listener, tree);
 
             listener.showRegister();
-            listener.ListInstrucionStack();
+            listener.ListInstructionsStack();
             System.out.println("RUNNING.....................");
             if(listener.CheckInstructionStack()){
                 listener.RunStack();

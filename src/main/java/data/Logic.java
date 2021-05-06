@@ -1,6 +1,16 @@
 package data;
 
+import wrappers.FunctionNamesMap;
+import wrappers.LogicFunctionsMap;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class Logic {
+
+    public static LogicFunctionsMap map = new LogicFunctionsMap();
+
     public static boolean and(ComplexDouble a, ComplexDouble b){
         return a.realPart > 0.0 && b.realPart > 0.0;
     }
