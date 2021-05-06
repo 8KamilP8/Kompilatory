@@ -1,4 +1,3 @@
-/*
 function pattern(x,y) where(>=(x,5))
 {
     +(x,y);
@@ -11,25 +10,11 @@ function pattern(x,y)
 {
     *(x,y);
 }
-pattern(3,1);
-#expected: 3
+pattern(3,1);   #expected: 3
+pattern(1,1);   #expected: 0
+pattern(5,1);   #expected: 6
 
-pattern(1,1);
-#expected: 0
-
-pattern(5,1);
-#expected: 6
-*/
-function r(x) where(>(x,1))
-{
-    +(1,-(x,1));
-}
-function r(x)
-{
-    +(1,0);
-}
-r(5);
-/*
+a(2); #expected 4
 function a(x)
 {
     c(x);
@@ -38,17 +23,15 @@ function b(x)
 {
     c(x);
 }
-function c(z)
+function c(x)
 {
-    +(z,z);
+    +(x,x);
 }
-*/
-# r(5) = +(1,r(4))
-# r(4) = +(1,r(3))
-# r(3) = +(1,r(2))
-# r(2) = +(1,r(1))
-# r(1) = 1
-#a(2);
+function c(w)
+{
+    *(w,w);
+}
+factorial(5);   #expected 120;
 
 function factorial(x) where(>(x,1))
 {
@@ -58,4 +41,79 @@ function factorial(x)
 {
     +(1,0);
 }
-factorial(5);
+
+function example(x,y)
+{
+    -(x,y);
+}
+function example(x,y,z)
+{
+    z=+(y,z);
+    example(x,z);
+}
+function wrongWhereUsage(x)
+{
+    +(0,100);
+}
+function wrongWhereUsage(x) where(==(x,5))
+{
+    +(0,200);
+}
+function correctWhereUsage(x) where(==(x,5))
+{
+    +(0,200);
+}
+function correctWhereUsage(x)
+{
+    +(0,100);
+}
+function globalZ()
+{
+    +(x,y);
+}
+function global2()
+{
+    x = 5;
+    +(x,y);
+}
+function global3()
+{
+    global x = 5;
+    +(x,y);
+}
+function double(longerName12345678900987654321)
+{
+    +(longerName12345678900987654321,longerName12345678900987654321);
+}
+x=8;
+y=4;
+z=globalZ();           #expected 12
+globalZ();           #expected 12
+#global2();          #expected 9
+global3();           #expected 9
+globalZ();
+/*
+globalZ();
+x=8;
+y=4;
+example(y,x);       #expected -4
+example(10,6,5);    #expected -1
+wrongWhereUsage(5); #expected 100
+correctWhereUsage(5); #expected 200
+double(9.0); #expected 18
+double(w); #expected 0
+#notDefinedFunction(alfa,beta); #cannot resolve message
+#definedWithOneParameter(alfa,beta); #cannot resolve message
+function definedWithOneParameter(alfa)
+{
+    +(0,0);
+}
+function stackOverFlow()
+{
+    stackOverFlow();
+}
+#stackOverFlow(); #runtime error
+x=y;
+y=x;
+#expected register -> {x=4.0,y=4.0}
+*/

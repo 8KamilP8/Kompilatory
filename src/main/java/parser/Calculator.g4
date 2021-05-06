@@ -33,6 +33,7 @@ WHERE: 'where';
 AND: '&';
 OR: '|';
 NOT: '!';
+GLOBAL: 'global';
 start : WHITESPACE* program_elements WHITESPACE*;
 pattern_matching : logic_function_name '(' pattern_matching_arg ',' pattern_matching_arg ')' | NOT '(' pattern_matching_arg ')';
 
@@ -53,14 +54,15 @@ COMMENT
 LINE_COMMENT
     : '#' ~( '\r' | '\n' )*;
 
-variable: NAME;
+variable: NAME | GLOBAL WHITESPACE NAME;
 
 variables: variable | variable ',' variables;
 right_assignments: right_assignment ',' right_assignments | right_assignment;
 func_arg: function_call | variable | complex_number | function_name;
 func_args: func_arg ',' func_args | func_arg;
 
-function_call: NAME '(' func_args ')'
+function_call:      NAME '()'
+                  | NAME '(' func_args ')'
                   | ADD '('func_arg ',' func_arg')'
                   | MUL '('func_arg ',' func_arg')'
                   | DIV '('func_arg ',' func_arg')'
@@ -81,7 +83,8 @@ instruction: function_call ';' | assignment ';';
 instructions: instruction WHITESPACE instructions | instruction;
 function_body : BEGIN WHITESPACE instructions WHITESPACE END;
 function : FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE WHERE'(' pattern_matching ')' WHITESPACE function_body
-         | FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE function_body;
+         | FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE function_body
+         | FUNCTION WHITESPACE NAME '()' WHITESPACE function_body;
 program_instructions: program_instruction WHITESPACE program_instructions | program_instruction;
 program_instruction: instruction;
 program_elements: program_element WHITESPACE program_elements | program_element;

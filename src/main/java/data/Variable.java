@@ -6,9 +6,11 @@ public class Variable implements Argument {
     public String name;
     public Register globalRegister;
     public HashMap<String,ComplexDouble> localRegister = new HashMap<>();
-    public Variable(String name, Register register) {
+    boolean global = false;
+    public Variable(String name, Register register, boolean global) {
         this.name = name;
         this.globalRegister = register;
+        this.global = global;
     }
 
     @Override

@@ -65,7 +65,11 @@ public class CalculationListener extends CalculatorBaseListener {
     }
 
     public void RunStack(){
-        instructionStack.forEach(ins -> System.out.println(ins.toString() +   " -> " + ins.Do()));
+        instructionStack.forEach(ins -> {
+            System.out.println(ins.toString() +   " -> " + ins.Do());
+        }
+
+        );
     }
 
     public void ListInstructionsStack(){
@@ -108,7 +112,8 @@ public class CalculationListener extends CalculatorBaseListener {
 
     }
     @Override public void enterVariable(CalculatorParser.VariableContext ctx) {
-        Variable variable =  new Variable(ctx.getText(), register);
+        boolean b = ctx.GLOBAL() != null;
+        Variable variable =  new Variable(ctx.NAME().getText(), register,b);
         stack.push(variable);
     }
 
@@ -208,10 +213,12 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void exitAssignment(CalculatorParser.AssignmentContext ctx) {
-        String leftName = ctx.variable().getText();
-        boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction;
+        String leftName = ctx.variable().NAME().getText();
+
+        boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction || ctx.variable().GLOBAL() != null;
+        System.out.println("ASS: " + ctx.variable().NAME().getText()+" "+ctx.variable().GLOBAL() + " " + b);
         Assignment assignment = new Assignment(register,leftName,stack.pop(),b);
-        if(b) mainInstructionStackNum++;
+        if(ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction) mainInstructionStackNum++;
         instructionStack.push(assignment);
     }
 
@@ -279,6 +286,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     }
     private int getVariablesTreeHeight(ParseTree child){
+        if(child == null) return 0;
         if(child.getChildCount()==3){
             return  getVariablesTreeHeight(child.getChild(2)) + 1;
         }  else if (child.getChildCount() >0){

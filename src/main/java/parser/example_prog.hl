@@ -1,39 +1,15 @@
-function xd(iterations,Z,C,maxIter) where(&(<(abs(Z),2),<(iterations,maxIter)))
+function global()
 {
-    Z = +(*(Z,Z),C);
-    iterations = s(iterations);
-    xd(iterations,Z,C,maxIter);
+    +(x,y);
 }
-function xd(iterations,Z,C,maxIter)
+function global2()
 {
-    return = iterations;
+    x = 5;
+    +(x,y);
 }
-function wy(x,y) where(<=(Im(y),2))
-{
-    iterations = 0;
-    C = +(x,y);
-    Z= 0;
-    iterations = xd(iterations,Z,C,10);
-    plot(+(x,y),mod(iterations,256));
-    y = +(y,*(epsilon,0+1i));
-    w(x,y);
-}
-function wy(x,y)
-{
-    return = y;
-}
-function wx(x,y) where(<=(x,2))
-{
-    w(x,y);
-    x = +(x,epsilon);
-    wx(x);
-}
-function wx(x,y)
-{
-    return = 0;
-}
-function MBrot()
-{
-    epsilon = 0.001;
-    wx(-2,0-2i);
-}
+x=8;
+y=4;
+global();         #expected 12
+global();           #expected 12
+global2();          #expected 9
+global();

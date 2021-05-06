@@ -86,7 +86,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
                 var val = ins.Do();
                 returnVal.set(val);
             });
-            localVariableRegister.clear();
+            //localVariableRegister.clear();
             return returnVal.get();
         }
 
@@ -131,10 +131,11 @@ public class FunctionCallHeader extends Instruction implements Argument {
             str.append(", ");
         }
         var last = str.lastIndexOf(", ");
-        str.deleteCharAt(last+1);
-        str.deleteCharAt(last);
+        if(args.length >= 1){
+            str.deleteCharAt(last+1);
+            str.deleteCharAt(last);
+        }
         str.append(')');
         return str.toString();
-
     }
 }

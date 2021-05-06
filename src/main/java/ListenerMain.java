@@ -51,7 +51,7 @@ public class ListenerMain {
                 listener.RunStack();
                 //aggregator.print();
                 aggregator.toFile("output");
-
+                System.out.println("Global Register:");
                 listener.showGlobalRegister();
             }
 
