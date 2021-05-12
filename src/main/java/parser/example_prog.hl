@@ -13,3 +13,123 @@ global();         #expected 12
 global();           #expected 12
 global2();          #expected 9
 global();
+function pattern(x,y) where(>=(x,5))
+{
+    +(x,y);
+}
+function pattern(x,y) where(<(x,2))
+{
+    -(x,y);
+}
+function pattern(x,y)
+{
+    *(x,y);
+}
+pattern(3,1);   #expected: 3
+pattern(1,1);   #expected: 0
+pattern(5,1);   #expected: 6
+
+a(2); #expected 4
+function a(x)
+{
+    c(x);
+}
+function b(x)
+{
+    c(x);
+}
+function c(x)
+{
+    +(x,x);
+}
+function c(w)
+{
+    *(w,w);
+}
+factorial(5);   #expected 120;
+
+function factorial(x) where(>(x,1))
+{
+    *(x,factorial(-(x,1)));
+}
+function factorial(x)
+{
+    +(1,0);
+}
+
+function example(x,y)
+{
+    -(x,y);
+}
+function example(x,y,z)
+{
+    z=+(y,z);
+    example(x,z);
+}
+function wrongWhereUsage(x)
+{
+    +(0,100);
+}
+function wrongWhereUsage(x) where(==(x,5))
+{
+    +(0,200);
+}
+function correctWhereUsage(x) where(==(x,5))
+{
+    +(0,200);
+}
+function correctWhereUsage(x)
+{
+    +(0,100);
+}
+function globalZ()
+{
+    +(x,y);
+}
+function global2()
+{
+    x = 5;
+    +(x,y);
+}
+function global3()
+{
+    global x = 5;
+    x = 3;
+    +(x,y);
+}
+function double(longerName12345678900987654321)
+{
+    +(longerName12345678900987654321,longerName12345678900987654321);
+}
+x=8;
+y=4;
+z=globalZ();           #expected 12
+a=globalZ();           #expected 12
+#global2();          #expected 9
+x=global3();           #expected 9
+y=globalZ();
+/*
+globalZ();
+x=8;
+y=4;
+example(y,x);       #expected -4
+example(10,6,5);    #expected -1
+wrongWhereUsage(5); #expected 100
+correctWhereUsage(5); #expected 200
+double(9.0); #expected 18
+double(w); #expected 0
+#notDefinedFunction(alfa,beta); #cannot resolve message
+#definedWithOneParameter(alfa,beta); #cannot resolve message
+function definedWithOneParameter(alfa)
+{
+    +(0,0);
+}
+function stackOverFlow()
+{
+    stackOverFlow();
+}
+#stackOverFlow(); #runtime error
+x=y;
+y=x;
+#expected register -> {x=4.0,y=4.0}
+*/

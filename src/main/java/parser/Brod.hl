@@ -1,119 +1,69 @@
-function pattern(x,y) where(>=(x,5))
+#xd(3,1,0,4);
+function xd(iterations,Z,C,maxIter) where(&(<(abs(Z),2),<(iterations,maxIter)))
 {
-    +(x,y);
+    Z = +(*(Z,Z),C);
+    iterations = +(iterations,1);
+    xd(iterations,Z,C,maxIter);
 }
-function pattern(x,y) where(<(x,2))
+function xd(iterations,Z,C,maxIter)
 {
-    -(x,y);
+    return = iterations;
 }
-function pattern(x,y)
+function wy(x,y) where(<=(Im(y),2))
 {
-    *(x,y);
+    iterations = 0;
+    C = +(x,y);
+    Z= 0;
+    iterations = xd(iterations,Z,C,10);
+    plot(x,Im(y),%(iterations,256));
+    y = +(y,*(epsilon,0+1i));
+    wy(x,y);
 }
-pattern(3,1);   #expected: 3
-pattern(1,1);   #expected: 0
-pattern(5,1);   #expected: 6
-
-a(2); #expected 4
-function a(x)
+function wy(x,y)
 {
-    c(x);
+    return = y;
 }
-function b(x)
+function wx(x,y) where(<=(x,2))
 {
-    c(x);
+    wy(x,y);
+    x = +(x,epsilon);
+    wx(x);
 }
-function c(x)
+function wx(x,y)
 {
-    +(x,x);
+    return = 0;
 }
-function c(w)
+while(Z,C,iterations)
 {
-    *(w,w);
-}
-factorial(5);   #expected 120;
-
-function factorial(x) where(>(x,1))
-{
-    *(x,factorial(-(x,1)));
-}
-function factorial(x)
-{
-    +(1,0);
+    Z = +(*(Z,Z),C);
+    iterations = +(iterations,1);
+    while(Z,C,iterations);
 }
 
-function example(x,y)
+function forY(y,epsilon,x)
 {
-    -(x,y);
+    iterations=0;
+    C = +(x,Im(y));
+    Z = 0;
+    while()
 }
-function example(x,y,z)
+
+function forX(x, epsilon)
 {
-    z=+(y,z);
-    example(x,z);
+    forY();
 }
-function wrongWhereUsage(x)
+
+function MBrot()
 {
-    +(0,100);
+    epsilon = 0.001;
+    maxIter = 10;
+    maxColors = 256;
+    forX();
+    wx(-2,0-2i);
 }
-function wrongWhereUsage(x) where(==(x,5))
-{
-    +(0,200);
-}
-function correctWhereUsage(x) where(==(x,5))
-{
-    +(0,200);
-}
-function correctWhereUsage(x)
-{
-    +(0,100);
-}
-function globalZ()
-{
-    +(x,y);
-}
-function global2()
-{
-    x = 5;
-    +(x,y);
-}
-function global3()
-{
-    global x = 5;
-    +(x,y);
-}
-function double(longerName12345678900987654321)
-{
-    +(longerName12345678900987654321,longerName12345678900987654321);
-}
-x=8;
-y=4;
-z=globalZ();           #expected 12
-globalZ();           #expected 12
-#global2();          #expected 9
-global3();           #expected 9
-globalZ();
-/*
-globalZ();
-x=8;
-y=4;
-example(y,x);       #expected -4
-example(10,6,5);    #expected -1
-wrongWhereUsage(5); #expected 100
-correctWhereUsage(5); #expected 200
-double(9.0); #expected 18
-double(w); #expected 0
-#notDefinedFunction(alfa,beta); #cannot resolve message
-#definedWithOneParameter(alfa,beta); #cannot resolve message
-function definedWithOneParameter(alfa)
-{
-    +(0,0);
-}
-function stackOverFlow()
-{
-    stackOverFlow();
-}
-#stackOverFlow(); #runtime error
-x=y;
-y=x;
-#expected register -> {x=4.0,y=4.0}
-*/
+epsilon = 0.001;
+maxIter=10;
+iterations=0;
+MBrot();
+
+

@@ -351,5 +351,6 @@ public class CalculationListener extends CalculatorBaseListener {
         var arg2 = stack.pop();
         var arg1 = stack.pop();
         lastWhere = new Where(Logic.map.getType(logicOperationName), arg1,arg2);
+        stack.push(lastWhere);
     }
 }

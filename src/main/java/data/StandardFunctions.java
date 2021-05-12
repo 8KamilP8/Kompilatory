@@ -46,5 +46,7 @@ public class StandardFunctions {
     public static ComplexDouble Im(ComplexDouble a){
         return new ComplexDouble(a.imaginaryPart,0.0);
     }
-
+    public static ComplexDouble abs(ComplexDouble a){
+        return new ComplexDouble(Math.abs(a.realPart),a.imaginaryPart);
+    }
 }

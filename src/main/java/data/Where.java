@@ -3,7 +3,7 @@ package data;
 import java.lang.management.LockInfo;
 import java.util.HashMap;
 
-public class Where {
+public class Where implements Argument {
     private LogicOperationType operationType;
     private Argument arg1;
     private Argument arg2;
@@ -31,5 +31,20 @@ public class Where {
     @Override
     public String toString() {
         return "where" + '{' + operationType.toString() + '(' + arg1 + ',' + arg2 + ')' +  '}';
+    }
+
+    @Override
+    public ComplexDouble getValue() {
+        return evaluate() ? ComplexDouble.one() : ComplexDouble.zero();
+    }
+
+    @Override
+    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
+        this.localVariableRegister = localVariableRegister;
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
     }
 }

@@ -93,6 +93,10 @@ public class FunctionCallHeader extends Instruction implements Argument {
     }
     private FunctionBody getBody(){
         var bodiesCollection = register.functionRegister.get(new PredicateHeader(funcName,new String[args.length]));
+        if(bodiesCollection == null){
+            System.out.println("ERROR: cannot find body, bodiesCollection == null , Function: " + funcName);
+            return null;
+        }
         for(var pair : bodiesCollection){
             var where = pair.getKey();
             where.setRegister(localVariableRegister);
@@ -100,6 +104,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
                 return pair.getValue();
             }
         }
+        System.out.println("ERROR: cannot find body in bodiesCollecion, all wheres false, Function: " + funcName);
         return null;
     }
     private void putHeaderVariablesIntoRegister(HashMap<String,ComplexDouble> register){
