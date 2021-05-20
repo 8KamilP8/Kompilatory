@@ -6,12 +6,15 @@ import data.StandardFunctions;
 import java.util.Set;
 
 public class StandardFunctionsMap implements FunctionNamesMap{
-    private Set<String> funcNames = Set.of("+","-","*","/","%","sin","cos","tan","Im","Re","abs");
+    private Set<String> funcNames2 = Set.of("+","-","*","/","%");
+    private Set<String> funcNames1 = Set.of("sin","cos","tan","Im","Re","abs","sqrt");
     @Override
     public boolean contains(String name) {
-        return funcNames.contains(name);
+        return funcNames2.contains(name) || funcNames1.contains(name);
     }
-
+    public int argsNum(String name){
+        return funcNames2.contains(name) ? 2: (funcNames1.contains(name) ? 1: -1 );
+    }
     @Override
     public ComplexDouble mapAndEvaluate(String funcName, ComplexDouble a) {
         switch (funcName){
@@ -27,6 +30,8 @@ public class StandardFunctionsMap implements FunctionNamesMap{
                 return StandardFunctions.Im(a);
             case "abs":
                 return StandardFunctions.abs(a);
+            case "sqrt":
+                return StandardFunctions.sqrt(a);
         }
         return ComplexDouble.i();
     }

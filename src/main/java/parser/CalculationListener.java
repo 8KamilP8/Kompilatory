@@ -14,33 +14,12 @@ import java.util.Stack;
 
 
 public class CalculationListener extends CalculatorBaseListener {
-    /**
-     * A stack is used to track what numbers
-     * we have seen last. This is our only
-     * means of communicating values.
-     *
-     * The right number in
-     * an operation is always the last one seen or
-     * calculated for that operation. Because a stack
-     * works via Last In First Out,
-     * the right number should be "popped" off first.
-     */
 
     private HashMap<PredicateHeader, ArrayList<Pair<Where, FunctionBody>>> functionRegister = new HashMap<PredicateHeader, ArrayList<Pair<Where,FunctionBody>>>();
 
-    private HashMap<String,ComplexDouble> globalVariableRegister = new HashMap<String,ComplexDouble>();
-    private HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
-
-    private Stack<ComplexDouble> numberStack = new Stack<>();
-    private Stack<FunctionCallHeader> functionStack = new Stack<>();
     private Stack<Instruction> instructionStack = new Stack<>();
     private MatrixAggregator aggregator;
 
-    private boolean isInBody = false;
-    private boolean isInInstruction = false;
-    private boolean isInFunctionCall = false;
-    private boolean isFunctionOnStack = false;
-    private boolean isNumberOnStack = false;
 
     private FirstPhaseStack stack;
     private Register register;
@@ -50,7 +29,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     public CalculationListener(MatrixAggregator aggregator) {
         this.aggregator = aggregator;
-        register = new Register(functionRegister,globalVariableRegister,localVariableRegister);
+        register = new Register(functionRegister,new HashMap<String,ComplexDouble>(),new HashMap<String,ComplexDouble>());
         stack = new FirstPhaseStack();
     }
 
@@ -67,9 +46,7 @@ public class CalculationListener extends CalculatorBaseListener {
     public void RunStack(){
         instructionStack.forEach(ins -> {
             System.out.println(ins.toString() +   " -> " + ins.Do());
-        }
-
-        );
+        });
     }
 
     public void ListInstructionsStack(){
@@ -82,12 +59,7 @@ public class CalculationListener extends CalculatorBaseListener {
     public void showGlobalRegister(){
         System.out.println(register.globalVariableRegister);
     }
-    /**
-     * The last value on the stack is the result of all
-     * applied calculations.
-     *
-     * @return Double
-     */
+
 
     @Override
     public void enterComplex_number(CalculatorParser.Complex_numberContext ctx) {
@@ -107,58 +79,18 @@ public class CalculationListener extends CalculatorBaseListener {
             }
         }
     }
-    @Override
-    public void enterRight_assignments(CalculatorParser.Right_assignmentsContext ctx) {
-
-    }
     @Override public void enterVariable(CalculatorParser.VariableContext ctx) {
         boolean b = ctx.GLOBAL() != null;
         Variable variable =  new Variable(ctx.NAME().getText(), register,b);
         stack.push(variable);
     }
-
-    @Override public void exitVariable(CalculatorParser.VariableContext ctx) { }
-    @Override
-    public void exitRight_assignments(CalculatorParser.Right_assignmentsContext ctx) {
-        super.exitRight_assignments(ctx);
-    }
-
-    @Override
-    public void enterFunction_call(CalculatorParser.Function_callContext ctx) {
-
-        if(isInInstruction){
-            isInFunctionCall = true;
-        }
-        /*String functionName = ctx.getChild(0).getText();
-        int length = 2;
-        PredicateHeader header = new PredicateHeader(functionName, new String[length]);
-        var patternMatchingList = functionRegister.get(header);
-        if(functionName.equals("plot")){
-            int x,y,z;
-            x = Integer.parseInt(ctx.getChild(2).getChild(0).getText());
-            y = Integer.parseInt(ctx.getChild(2).getChild(2).getChild(0).getText());
-            z = Integer.parseInt(ctx.getChild(2).getChild(2).getChild(2).getChild(0).getText());
-            aggregator.plot(x,y,z);
-        }
-        if(patternMatchingList == null) return;
-        for (var p:patternMatchingList) {
-            if(p.getKey().evaluate()){
-                //p.getValue().Call();
-                break;
-            }
-        }*/
-        //check if functionName is in standard functions
-        //if not:
-
-    }
-
     @Override
     public void exitFunction_call(CalculatorParser.Function_callContext ctx) {
         if(ctx.getParent().getRuleIndex() == CalculatorParser.RULE_func_arg || ctx.getParent().getRuleIndex() == CalculatorParser.RULE_right_assignment){
             //as argument
             String funName = ctx.getChild(0).getText();
             if(StandardFunctions.map.contains(funName)){
-                int argsNum = 2;
+                int argsNum = StandardFunctions.map.argsNum(funName);
                 Argument[] args = new Argument[argsNum];
                 for(int i =argsNum-1; i>=0;i--){
 
@@ -181,7 +113,7 @@ public class CalculationListener extends CalculatorBaseListener {
         }else if (ctx.getParent().getRuleIndex() == CalculatorParser.RULE_instruction){
             String funName = ctx.getChild(0).getText();
             if(StandardFunctions.map.contains(funName)){
-                int argsNum = 2;
+                int argsNum = StandardFunctions.map.argsNum(funName);
                 Argument[] args = new Argument[argsNum];
                 for(int i =argsNum-1; i>=0;i--){
 
@@ -222,31 +154,9 @@ public class CalculationListener extends CalculatorBaseListener {
         instructionStack.push(assignment);
     }
 
-    @Override
-    public void enterInstruction(CalculatorParser.InstructionContext ctx) {
-        isInInstruction = true;
-    }
-
-    @Override
-    public void exitInstruction(CalculatorParser.InstructionContext ctx) {
-        isInInstruction = false;
-    }
-
-    @Override
-    public void exitInstructions(CalculatorParser.InstructionsContext ctx) {
-        super.exitInstructions(ctx);
-    }
-
-
-    @Override
-    public void enterFunction_body(CalculatorParser.Function_bodyContext ctx) {
-        isInBody = true;
-
-    }
 
     @Override
     public void exitFunction_body(CalculatorParser.Function_bodyContext ctx) {
-        isInBody = false;
         var funcBody = new FunctionBody();
         while(instructionStack.size() > mainInstructionStackNum){
             funcBody.instructions.add(0,instructionStack.pop());

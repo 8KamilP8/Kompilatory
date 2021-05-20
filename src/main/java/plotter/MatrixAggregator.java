@@ -1,5 +1,9 @@
 package plotter;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,13 +21,18 @@ public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
-    public int size = 64;
+    public int size = 500;
+    public float minValueX = -2;
+    public float maxValueX = 2;
+
+    public float minValueY = -2;
+    public float maxValueY = 2;
 
     public MatrixAggregator() {
         matrix = new ArrayList<ArrayList<MatrixElement>>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size+1; i++) {
             matrix.add(new ArrayList<MatrixElement>());
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < size+1; j++) {
                 matrix.get(i).add(new MatrixElement(0));
             }
         }
@@ -50,8 +59,11 @@ public class MatrixAggregator implements Plotter {
     }
 
     @Override
-    public void plot(float x, float y, int v) {
-        setValue((int) (x), (int) (y), new MatrixElement(v));
+    public void plot(float y, float x, int v) {
+        int xM = Math.round((x-minValueX)*(size/(maxValueX-minValueX)));
+        int yM = Math.round((y-minValueY)*(size/(maxValueY-minValueY)));
+        if(xM >= size || yM >=size || xM < 0 || yM <0) return;
+        setValue(xM, yM, new MatrixElement(v));
     }
 
 
@@ -63,7 +75,24 @@ public class MatrixAggregator implements Plotter {
             System.out.println("");
         }
     }
+    public void toImage(){
+        var img = new BufferedImage(size+1,size+1,BufferedImage.TYPE_BYTE_GRAY);
+        WritableRaster raster = (WritableRaster) img.getData();
 
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                raster.setPixel(i,size-j,new int[]{matrix.get(i).get(j).v,matrix.get(i).get(j).v,matrix.get(i).get(j).v});
+            }
+        }
+        img.setData(raster);
+
+
+        File outputfile = new File("image.jpg");
+        try{
+            ImageIO.write(img, "jpg", outputfile);
+        }
+        catch (Exception e){}
+    }
     public void toFile(String name) {
         if (name == null)
             name = "res";

@@ -16,6 +16,10 @@ public class Variable implements Argument {
     @Override
     public ComplexDouble getValue() {
         ComplexDouble value = ComplexDouble.zero();
+        if(global){
+            value = globalRegister.globalVariableRegister.get(name);
+            return value;
+        }
         if(localRegister.containsKey(name)){
             value = localRegister.get(name);
         }else if(globalRegister.globalVariableRegister.containsKey(name)){

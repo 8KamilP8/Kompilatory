@@ -67,7 +67,7 @@ public class ComplexDouble implements Argument{
     @Override
     public String toString() {
         return
-                "" + realPart;// +
+                "" + realPart + "+" + imaginaryPart + "i";// +
                 //" + " + imaginaryPart +
                 //"i";
     }

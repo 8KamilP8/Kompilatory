@@ -50,7 +50,8 @@ public class ListenerMain {
             if(listener.CheckInstructionStack()){
                 listener.RunStack();
                 //aggregator.print();
-                aggregator.toFile("output");
+                //aggregator.toFile("output");
+                aggregator.toImage();
                 System.out.println("Global Register:");
                 listener.showGlobalRegister();
             }

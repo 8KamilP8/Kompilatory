@@ -17,7 +17,7 @@ public class Assignment extends Instruction {
     @Override
     public ComplexDouble Do() {
         if(global){
-            assignment.setLocalRegister(register.globalVariableRegister);
+            assignment.setLocalRegister(localVariableRegister);
             var ass = assignment.getValue();
             register.globalVariableRegister.put(varName,ass);
             return ass;

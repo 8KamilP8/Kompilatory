@@ -64,6 +64,11 @@ public class LogicFunctionsMap implements FunctionNamesMap {
         return ComplexDouble.i();
     }
 
+    @Override
+    public int argsNum(String name) {
+        return 0;
+    }
+
     private ComplexDouble boolToComplexDouble(boolean b){
         return b ? ComplexDouble.one() : ComplexDouble.zero();
     }
