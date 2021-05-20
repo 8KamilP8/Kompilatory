@@ -75,64 +75,59 @@ public class FunctionCallHeader extends Instruction implements Argument {
             putHeaderVariablesIntoRegister(localVariableRegister);
             var val = StandardFunctions.map.mapAndEvaluate(funcName, args[0].getValue());
             return val;
-        }else if(funcName.equals("plotFunction")) {
-            ComplexDouble x = args[1].getValue();
-
-            var functionCallHeader = ((FunctionCallHeader) args[0]);
-            var name = functionCallHeader.funcName;
-            var color = args[4].getValue().realPart.intValue();
-            System.out.println("Plotting: " + name);
-            while (x.realPart < args[2].getValue().realPart) {
-                if (StandardFunctions.map.contains(name)) {
-                    var value = StandardFunctions.map.mapAndEvaluate(name, x);
-                    plotter.plot(x.realPart.floatValue(), value.realPart.floatValue(), color);
-                } else {
-
-                    var fch = new FunctionCallHeader(name, new Argument[functionCallHeader.args.length], register, plotter);
-                    fch.args[0] = x;
-                    for (int i = 1; i < fch.args.length; i++) {
-                        fch.args[i] = ((FunctionCallHeader) args[0]).args[i].getValue();
-                    }
-                    var value = fch.getValue();
-                    plotter.plot(x.realPart.floatValue(), value.realPart.floatValue(), color);
-                }
-                x.realPart += args[3].getValue().realPart;
-
-            }
-            return ComplexDouble.zero();
-            //plotReverseFunction
-        }else if(funcName.equals("plotReverseFunction")){
-            ComplexDouble x = args[1].getValue();
-
-            var functionCallHeader = ((FunctionCallHeader) args[0]);
-            var name = functionCallHeader.funcName;
-            var color = args[4].getValue().realPart.intValue();
-            System.out.println("Plotting: " + name);
-            while (x.realPart < args[2].getValue().realPart) {
-                if (StandardFunctions.map.contains(name)) {
-                    var value = StandardFunctions.map.mapAndEvaluate(name, x);
-                    plotter.plot(value.realPart.floatValue(), x.realPart.floatValue(), color);
-                } else {
-
-                    var fch = new FunctionCallHeader(name, new Argument[functionCallHeader.args.length], register, plotter);
-                    fch.args[0] = x;
-                    for (int i = 1; i < fch.args.length; i++) {
-                        fch.args[i] = ((FunctionCallHeader) args[0]).args[i].getValue();
-                    }
-                    var value = fch.getValue();
-                    plotter.plot(value.realPart.floatValue(), x.realPart.floatValue(), color);
-                }
-                x.realPart += args[3].getValue().realPart;
-
-            }
-            return ComplexDouble.zero();
-        }else if(funcName.equals("plot")){
-            plotter.plot(args[0].getValue().realPart.floatValue(),args[1].getValue().realPart.floatValue(), (args[2].getValue().realPart).intValue());
-            return new ComplexDouble(args[0].getValue().realPart,args[1].getValue().realPart);
-        }else if(funcName.equals("print")){
-            System.out.println("Print: " + args[0].toString() + " = "+args[0].getValue());
-            return ComplexDouble.zero();
         }
+//        else if(funcName.equals("plotFunction")) {
+//            ComplexDouble x = args[1].getValue();
+//
+//            var functionCallHeader = ((FunctionCallHeader) args[0]);
+//            var name = functionCallHeader.funcName;
+//            var color = args[4].getValue().realPart.intValue();
+//            System.out.println("Plotting: " + name);
+//            while (x.realPart < args[2].getValue().realPart) {
+//                if (StandardFunctions.map.contains(name)) {
+//                    var value = StandardFunctions.map.mapAndEvaluate(name, x);
+//                    plotter.plot(x.realPart.floatValue(), value.realPart.floatValue(), color);
+//                } else {
+//
+//                    var fch = new FunctionCallHeader(name, new Argument[functionCallHeader.args.length], register, plotter);
+//                    fch.args[0] = x;
+//                    for (int i = 1; i < fch.args.length; i++) {
+//                        fch.args[i] = ((FunctionCallHeader) args[0]).args[i].getValue();
+//                    }
+//                    var value = fch.getValue();
+//                    plotter.plot(x.realPart.floatValue(), value.realPart.floatValue(), color);
+//                }
+//                x.realPart += args[3].getValue().realPart;
+//
+//            }
+//            return ComplexDouble.zero();
+//            //plotReverseFunction
+//        }else if(funcName.equals("plotReverseFunction")){
+//            ComplexDouble x = args[1].getValue();
+//
+//            var functionCallHeader = ((FunctionCallHeader) args[0]);
+//            var name = functionCallHeader.funcName;
+//            var color = args[4].getValue().realPart.intValue();
+//            System.out.println("Plotting: " + name);
+//            while (x.realPart < args[2].getValue().realPart) {
+//                if (StandardFunctions.map.contains(name)) {
+//                    var value = StandardFunctions.map.mapAndEvaluate(name, x);
+//                    plotter.plot(value.realPart.floatValue(), x.realPart.floatValue(), color);
+//                } else {
+//
+//                    var fch = new FunctionCallHeader(name, new Argument[functionCallHeader.args.length], register, plotter);
+//                    fch.args[0] = x;
+//                    for (int i = 1; i < fch.args.length; i++) {
+//                        fch.args[i] = ((FunctionCallHeader) args[0]).args[i].getValue();
+//                    }
+//                    var value = fch.getValue();
+//                    plotter.plot(value.realPart.floatValue(), x.realPart.floatValue(), color);
+//                }
+//                x.realPart += args[3].getValue().realPart;
+//
+//            }
+//            return ComplexDouble.zero();
+//        }
         else {
 
             AtomicReference<ComplexDouble> returnVal = new AtomicReference<>(new ComplexDouble(0.0, 0.0));

@@ -58,7 +58,22 @@ public class StandardFunctionsMap implements FunctionNamesMap{
         switch (funcName){
             case "sin":
                 return StandardFunctions.sin(args[0].getValue());
-            //TODO: obsługa pozostałych funkcji
+            case "cos":
+                return StandardFunctions.cos(args[0].getValue());
+            case "tan":
+                return StandardFunctions.tan(args[0].getValue());
+            case "Re":
+                return StandardFunctions.Re(args[0].getValue());
+            case "Im":
+                return StandardFunctions.Im(args[0].getValue());
+            case "abs":
+                return StandardFunctions.abs(args[0].getValue());
+            case "sqrt":
+                return StandardFunctions.sqrt(args[0].getValue());
+            case "plot":
+                return StandardFunctions.plot(args[0].getValue(), args[1].getValue(), args[2].getValue());
+            case "print":
+                return StandardFunctions.print(args[0].toString(), args[0].getValue());
         }
         return ComplexDouble.i();
     }

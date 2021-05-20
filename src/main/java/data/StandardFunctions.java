@@ -58,4 +58,13 @@ public class StandardFunctions {
     }
 
     //TODO: przenieść plot z functionCallHeader
+    public static ComplexDouble plot(ComplexDouble x, ComplexDouble y, ComplexDouble color) {
+            plotter.plot(x.realPart.floatValue(),y.realPart.floatValue(), (color.realPart).intValue());
+            return new ComplexDouble(x.getValue().realPart,y.getValue().realPart);
+    }
+
+    public static ComplexDouble print(String str, ComplexDouble val) {
+            System.out.println("Print: " + str + " = "+val);
+            return ComplexDouble.zero();
+    }
 }
