@@ -1,5 +1,6 @@
 package wrappers;
 
+import data.Argument;
 import data.ComplexDouble;
 import data.StandardFunctions;
 
@@ -53,6 +54,13 @@ public class StandardFunctionsMap implements FunctionNamesMap{
         return ComplexDouble.i();
     }
 
-
+    public ComplexDouble mapAndEvaluate(String funcName, Argument[] args){
+        switch (funcName){
+            case "sin":
+                return StandardFunctions.sin(args[0].getValue());
+            //TODO: obsługa pozostałych funkcji
+        }
+        return ComplexDouble.i();
+    }
 
 }

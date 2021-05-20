@@ -1,12 +1,13 @@
 x=0;
+y=0;
 while(<(x,10))
 {
     y=0;
     while(<(y,2))
     {
-        print(x);
         print(y);
-        global y=+(1,y);
+        y=+(1,y);
     }
+    print(x);
     global x=+(x,1);
 }

@@ -1,3 +1,4 @@
+import data.StandardFunctions;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -15,6 +16,7 @@ public class ListenerMain {
         File file = new File(fileName);
         FileInputStream fis = null;
         MatrixAggregator aggregator = new MatrixAggregator();
+        StandardFunctions.plotter = aggregator;
         try {
             // Open the input file stream
             fis = new FileInputStream(file);
@@ -51,6 +53,7 @@ public class ListenerMain {
                 listener.RunStack();
                 //aggregator.print();
                 //aggregator.toFile("output");
+
                 aggregator.toImage();
                 System.out.println("Global Register:");
                 listener.showGlobalRegister();

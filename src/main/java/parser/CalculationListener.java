@@ -156,6 +156,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void exitFunction_body(CalculatorParser.Function_bodyContext ctx) {
+        if(currentFunctionName.equals("while")) return;
         var funcBody = new FunctionBody();
         while(instructionStack.size() > mainInstructionStackNum){
             funcBody.instructions.add(0,instructionStack.pop());
@@ -170,18 +171,23 @@ public class CalculationListener extends CalculatorBaseListener {
             }
             names[height-1] = tree.getChild(0).getText();
         }
-        if(currentFunctionName.equals("while")){
-            //instructionStack.push(new While(funcBody,(Where) stack.pop(),register));
-        }else{
-            functionRegister.get(new PredicateHeader(currentFunctionName,names)).add(new Pair<>(lastWhere,funcBody));
-        }
+        functionRegister.get(new PredicateHeader(currentFunctionName,names)).add(new Pair<>(lastWhere,funcBody));
 
     }
     @Override public void enterWhileLoop(CalculatorParser.WhileLoopContext ctx) {
         lastWhere = Where.empty();
         currentFunctionName="while";
     }
-
+    @Override public void exitWhileLoop(CalculatorParser.WhileLoopContext ctx) {
+        lastWhere = Where.empty();
+        currentFunctionName="while";
+        var funcBody = new FunctionBody();
+        while(instructionStack.size() > mainInstructionStackNum){
+            funcBody.instructions.add(0,instructionStack.pop());
+        }
+        While whileLoop = new While(funcBody,stack.popWhere(),register);
+        instructionStack.push(whileLoop);
+    }
     @Override
     public void enterFunction(CalculatorParser.FunctionContext ctx) {
         lastWhere = Where.empty();
@@ -268,7 +274,7 @@ public class CalculationListener extends CalculatorBaseListener {
         var arg2 = stack.pop();
         var arg1 = stack.pop();
         lastWhere = new Where(Logic.map.getType(logicOperationName), arg1,arg2);
-        stack.push(lastWhere);
+        stack.pushWhere(lastWhere);
 
     }
 }

@@ -1,11 +1,14 @@
 package data;
 
+import plotter.MatrixAggregator;
+import plotter.Plotter;
 import wrappers.StandardFunctionsMap;
 
 import java.util.Set;
 
 public class StandardFunctions {
     public static StandardFunctionsMap map = new StandardFunctionsMap();
+    public static Plotter plotter = new MatrixAggregator();
     public static ComplexDouble add(ComplexDouble a, ComplexDouble b){
         return new ComplexDouble(a.realPart+b.realPart, a.imaginaryPart+b.imaginaryPart);
     }
@@ -53,4 +56,6 @@ public class StandardFunctions {
     public static ComplexDouble sqrt(ComplexDouble a){
         return new ComplexDouble(Math.sqrt(a.realPart),0.0);
     }
+
+    //TODO: przenieść plot z functionCallHeader
 }

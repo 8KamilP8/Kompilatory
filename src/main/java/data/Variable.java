@@ -21,8 +21,10 @@ public class Variable implements Argument {
             return value;
         }
         if(localRegister.containsKey(name)){
+            System.out.println(name + "  local");
             value = localRegister.get(name);
         }else if(globalRegister.globalVariableRegister.containsKey(name)){
+            System.out.println(name + "  not global, but from global");
             value = globalRegister.globalVariableRegister.get(name);
         }
         return value;

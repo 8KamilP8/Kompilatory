@@ -33,6 +33,6 @@ public class While extends Instruction{
     }
 
     public String toString(){
-        return "while(" + condition.toString() + ")";
+        return "while(" + condition.toString() + ")" +fbody.toString();
     }
 }
