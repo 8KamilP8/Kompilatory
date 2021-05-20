@@ -29,10 +29,8 @@ public class FunctionCallHeader extends Instruction implements Argument {
     @Override
     public void setLocalRegister(HashMap<String, ComplexDouble> localRegister) {
         this.localVariableRegister = localRegister;
-        for (var arg:
-             args) {
+        for (var arg: args) {
             arg.setLocalRegister(localRegister);
-
         }
     }
 

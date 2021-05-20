@@ -140,7 +140,6 @@ public class CalculationListener extends CalculatorBaseListener {
 
         }
 
-
     }
 
     @Override
@@ -171,8 +170,16 @@ public class CalculationListener extends CalculatorBaseListener {
             }
             names[height-1] = tree.getChild(0).getText();
         }
+        if(currentFunctionName.equals("while")){
+            //instructionStack.push(new While(funcBody,(Where) stack.pop(),register));
+        }else{
+            functionRegister.get(new PredicateHeader(currentFunctionName,names)).add(new Pair<>(lastWhere,funcBody));
+        }
 
-        functionRegister.get(new PredicateHeader(currentFunctionName,names)).add(new Pair<>(lastWhere,funcBody));
+    }
+    @Override public void enterWhileLoop(CalculatorParser.WhileLoopContext ctx) {
+        lastWhere = Where.empty();
+        currentFunctionName="while";
     }
 
     @Override
@@ -262,5 +269,6 @@ public class CalculationListener extends CalculatorBaseListener {
         var arg1 = stack.pop();
         lastWhere = new Where(Logic.map.getType(logicOperationName), arg1,arg2);
         stack.push(lastWhere);
+
     }
 }

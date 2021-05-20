@@ -34,6 +34,7 @@ AND: '&';
 OR: '|';
 NOT: '!';
 GLOBAL: 'global';
+WHILE: 'while';
 start : WHITESPACE* program_elements WHITESPACE*;
 pattern_matching : logic_function_name '(' pattern_matching_arg ',' pattern_matching_arg ')' | NOT '(' pattern_matching_arg ')';
 
@@ -79,7 +80,8 @@ function_call:      NAME '()'
 
 right_assignment: function_call | variable | complex_number | function_name;
 assignment: variable WHITESPACE* '=' WHITESPACE* right_assignment;
-instruction: function_call ';' | assignment ';';
+whileLoop: WHILE '(' pattern_matching ')' WHITESPACE function_body;
+instruction: function_call ';' | assignment ';' | whileLoop;
 instructions: instruction WHITESPACE instructions | instruction;
 function_body : BEGIN WHITESPACE instructions WHITESPACE END;
 function : FUNCTION WHITESPACE NAME '(' variables? ')' WHITESPACE WHERE'(' pattern_matching ')' WHITESPACE function_body

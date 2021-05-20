@@ -168,6 +168,16 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitAssignment(CalculatorParser.AssignmentContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#whileLoop}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileLoop(CalculatorParser.WhileLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#whileLoop}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileLoop(CalculatorParser.WhileLoopContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#instruction}.
 	 * @param ctx the parse tree
 	 */

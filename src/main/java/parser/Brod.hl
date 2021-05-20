@@ -1,87 +1,12 @@
-function f(x,y)
+x=0;
+while(<(x,10))
 {
-    x = 9;
-    +(x,y);
+    y=0;
+    while(<(y,2))
+    {
+        print(x);
+        print(y);
+        global y=+(1,y);
+    }
+    global x=+(x,1);
 }
-function g(x)
-{
-    x = 9;
-    +(x,y);
-}
-function h(x)
-{
-    y = 12;
-    +(x,y);
-}
-x=5;
-y=10;
-a=f(x,y); # 9 + 10
-b=g(x); # 9 + 10
-c=h(y); # 12 + 10
-a=-2;
-b=2;
-function w(x,y)
-{
-    x = 9;
-    +(x,y);
-}
-function p1(x)
-{
-    +(x,0);
-}
-function p2(x)
-{
-    +(x,0.004);
-}
-function fact(x) where(>(x,1))
-{
-    *(x,fact(-(x,1)));
-}
-function fact(x)
-{
-    *(0.05,1);
-}
-function sin2(x)
-{
-    a = sin(x);
-    *(a,a);
-}
-function OX(x)
-{
-    plot(0,x,120);
-    +(0,0);
-}
-function x2(x)
-{
-    *(x,x);
-}
-function dx2(x,c)
-{
-    +(c,*(x,x));
-}
-function sinde(x,d)
-{
-    +(sin(x),d);
-}
-function sinD(x)
-{
-    plotFunction(sinde(0,x),-2,2,0.004,255);
-}
-sqrt(4);
-/*
-plotFunction(sin2(0),-2,2,0.004,255);
-plotFunction(fact(0),-2,2,0.004,255);
-plotFunction(x2(0),-2,2,0.004,155);
-plotFunction(OX(0),-2,2,0.004,120);
-plotFunction(dx2(0,1),-2,2,0.004,120);
-plotFunction(dx2(0,-1),-2,2,0.004,120);
-plotFunction(dx2(0,1.5),-2,2,0.004,120);
-plotFunction(dx2(0,-1.5),-2,2,0.004,120);
-*/
-function minussqrt(x)
-{
-    *(-1,sqrt(x));
-}
-plotReverseFunction(sqrt(0),0,2,0.004,155);
-plotFunction(x2(0),-2,2,0.004,120);
-plotReverseFunction(minussqrt(0),0,2,0.004,155);
