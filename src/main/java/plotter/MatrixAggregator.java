@@ -1,5 +1,7 @@
 package plotter;
 
+import data.ComplexDouble;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -21,13 +23,14 @@ public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
-    public int size = 500;
+    public int size = 1000;
     public float minValueX = -2;
     public float maxValueX = 2;
 
     public float minValueY = -2;
     public float maxValueY = 2;
 
+    public float minStep;
     public MatrixAggregator() {
         matrix = new ArrayList<ArrayList<MatrixElement>>();
         for (int i = 0; i < size+1; i++) {
@@ -36,6 +39,7 @@ public class MatrixAggregator implements Plotter {
                 matrix.get(i).add(new MatrixElement(0));
             }
         }
+        minStep = (maxValueX-minValueX)/size;
     }
 
     MatrixElement getValue(int x, int y) {
@@ -64,6 +68,11 @@ public class MatrixAggregator implements Plotter {
         int yM = Math.round((y-minValueY)*(size/(maxValueY-minValueY)));
         if(xM >= size || yM >=size || xM < 0 || yM <0) return;
         setValue(xM, yM, new MatrixElement(v));
+    }
+
+    @Override
+    public ComplexDouble getStep() {
+        return new ComplexDouble((double)minStep,0.0);
     }
 
 

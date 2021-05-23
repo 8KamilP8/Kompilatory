@@ -4,6 +4,6 @@ import java.util.HashMap;
 
 public interface Argument {
     ComplexDouble getValue();
-    void setLocalRegister(HashMap<String,ComplexDouble> localVariableRegister);
+    void setRegister(VariableRegister register);
     boolean isValid();
 }

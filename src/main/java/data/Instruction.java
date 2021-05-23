@@ -3,9 +3,8 @@ package data;
 import java.util.HashMap;
 
 public abstract class Instruction {
-    public Register register;
-    public HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
-    public Instruction(Register register) {
+    public VariableRegister register;
+    public Instruction(VariableRegister register) {
         this.register = register;
     }
 
@@ -16,10 +15,9 @@ public abstract class Instruction {
         return "Instruction{}";
     }
 
-    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
-        this.localVariableRegister = localVariableRegister;
+    public void setRegister(VariableRegister register) {
+        this.register = register;
     }
 
     public abstract boolean check();
-    public abstract String getHeader();
 }

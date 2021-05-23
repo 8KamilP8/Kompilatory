@@ -46,7 +46,7 @@ public class ListenerMain {
 
             walker.walk(listener, tree);
 
-            listener.showRegister();
+
             listener.ListInstructionsStack();
             System.out.println("RUNNING.....................");
             if(listener.CheckInstructionStack()){
@@ -56,7 +56,7 @@ public class ListenerMain {
 
                 aggregator.toImage();
                 System.out.println("Global Register:");
-                listener.showGlobalRegister();
+
             }
 
         } catch (IOException e) {

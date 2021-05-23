@@ -4,36 +4,29 @@ import java.util.HashMap;
 
 public class Variable implements Argument {
     public String name;
-    public Register globalRegister;
-    public HashMap<String,ComplexDouble> localRegister = new HashMap<>();
-    boolean global = false;
-    public Variable(String name, Register register, boolean global) {
+    public VariableRegister register;
+    public Variable(String name, VariableRegister register) {
         this.name = name;
-        this.globalRegister = register;
-        this.global = global;
+        this.register = register;
     }
 
     @Override
     public ComplexDouble getValue() {
         ComplexDouble value = ComplexDouble.zero();
-        if(global){
-            value = globalRegister.globalVariableRegister.get(name);
-            return value;
+        if(name.equals("step")){
+            return StandardFunctions.step();
         }
-        if(localRegister.containsKey(name)){
-            System.out.println(name + "  local");
-            value = localRegister.get(name);
-        }else if(globalRegister.globalVariableRegister.containsKey(name)){
-            System.out.println(name + "  not global, but from global");
-            value = globalRegister.globalVariableRegister.get(name);
-        }
+        value = register.getValue(name);
         return value;
     }
 
     @Override
-    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
-        localRegister = localVariableRegister;
+    public void setRegister(VariableRegister register) {
+        this.register = register;
     }
+
+
+
 
     @Override
     public boolean isValid() {

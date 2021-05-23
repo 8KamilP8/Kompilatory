@@ -1,13 +1,119 @@
-x=0;
+x=4;
 y=0;
-while(<(x,10))
+function f(x)
 {
+    h(x);
+    +(x,5);
+}
+function f(x,y)
+{
+    +(x,y);
+}
+function g(x)
+{
+    +(x,5);
+}
+function h(x)
+{
+    *(x,x);
+}
+b=f(h(x),+(2,2));
+a=g(x);
+print(x);
+print(y);
+x=0;
+function k(x)
+{
+    *(x,x);
+}
+function circle(radius)
+{
+    x=0;
+    while(<=(x,radius))
+    {
+        plot(x,sqrt(-(k(radius),k(x))),255);
+        x=+(x,0.004);
+    }
+    while(>=(x,0))
+    {
+        plot(x,-(0,sqrt(-(k(radius),k(x)))),255);
+        x=-(x,0.004);
+    }
+    while(>=(x,-(0,radius)))
+    {
+       plot(x,sqrt(-(k(radius),k(x))),255);
+       x=-(x,0.004);
+    }
+    while(<=(x,0))
+    {
+       plot(x,-(0,sqrt(-(k(radius),k(x)))),255);
+       x=+(x,0.004);
+    }
     y=0;
+    while(<=(y,radius))
+    {
+        plot(sqrt(-(k(radius),k(y))),y,255);
+        y=+(y,0.004);
+    }
+    while(>=(y,0))
+    {
+        plot(-(0,sqrt(-(k(radius),k(y)))),y,255);
+        y=-(y,0.004);
+    }
+    while(>=(y,-(0,radius)))
+    {
+       plot(sqrt(-(k(radius),k(y))),y,255);
+       y=-(y,0.004);
+    }
+    while(<=(y,0))
+    {
+       plot(-(0,sqrt(-(k(radius),k(y)))),y,255);
+       y=+(y,0.004);
+    }
+}
+function plotsin()
+{
+    x=-2;
+    while(<=(x,2))
+    {
+        plot(x,sin(x),255);
+        x=+(x,0.0004);
+    }
+}
+
+
+function plotFadeSin()
+{
+
+    alfa=255;
+    y=0;
+    while(>(alfa,0))
+    {
+        x=-2;
+        while(<=(x,2))
+        {
+            plot(x,+(sin(x),y),alfa);
+            plot(x,-(sin(x),y),alfa);
+            x=+(x,step);
+        }
+        alfa=-(alfa,1);
+        y=+(y,step);
+    }
+
+}
+function plotOX()
+{
+    x=-2;
+    y=-2;
+    while(<(x,2))
+    {
+        plot(x,0,122);
+        x=+(x,step);
+    }
     while(<(y,2))
     {
-        print(y);
-        y=+(1,y);
+        plot(0,y,122);
+        y=+(y,step);
     }
-    print(x);
-    global x=+(x,1);
 }
+plotFadeSin();

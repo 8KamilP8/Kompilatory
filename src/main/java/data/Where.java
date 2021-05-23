@@ -7,9 +7,11 @@ public class Where implements Argument {
     private LogicOperationType operationType;
     private Argument arg1;
     private Argument arg2;
-    private HashMap<String,ComplexDouble> localVariableRegister = new HashMap<String,ComplexDouble>();
-    public void setRegister(HashMap<String,ComplexDouble> register){
-        localVariableRegister = register;
+    private VariableRegister localRegister;
+
+    @Override
+    public void setRegister(VariableRegister register){
+        localRegister = register;
     }
     public Where(LogicOperationType operationType, Argument arg1, Argument arg2) {
         this.operationType = operationType;
@@ -23,8 +25,8 @@ public class Where implements Argument {
     }
 
     public boolean evaluate(){
-        arg1.setLocalRegister(localVariableRegister);
-        arg2.setLocalRegister(localVariableRegister);
+        arg1.setRegister(localRegister);
+        arg2.setRegister(localRegister);
         return Logic.eval(operationType,arg1.getValue(),arg2.getValue());
     }
 
@@ -38,10 +40,6 @@ public class Where implements Argument {
         return evaluate() ? ComplexDouble.one() : ComplexDouble.zero();
     }
 
-    @Override
-    public void setLocalRegister(HashMap<String, ComplexDouble> localVariableRegister) {
-        this.localVariableRegister = localVariableRegister;
-    }
 
     @Override
     public boolean isValid() {

@@ -7,15 +7,12 @@ import data.StandardFunctions;
 import java.util.Set;
 
 public class StandardFunctionsMap implements FunctionNamesMap{
-    private Set<String> funcNames2 = Set.of("+","-","*","/","%");
-    private Set<String> funcNames1 = Set.of("sin","cos","tan","Im","Re","abs","sqrt");
+    private Set<String> funcNames = Set.of("+","-","*","/","%","sin","cos","tan","Im","Re","abs","sqrt","plot","print");
     @Override
     public boolean contains(String name) {
-        return funcNames2.contains(name) || funcNames1.contains(name);
+        return funcNames.contains(name);
     }
-    public int argsNum(String name){
-        return funcNames2.contains(name) ? 2: (funcNames1.contains(name) ? 1: -1 );
-    }
+
     @Override
     public ComplexDouble mapAndEvaluate(String funcName, ComplexDouble a) {
         switch (funcName){
@@ -54,8 +51,43 @@ public class StandardFunctionsMap implements FunctionNamesMap{
         return ComplexDouble.i();
     }
 
+    @Override
+    public int argsNum(String name) {
+        switch (name){
+            case "sin":
+            case "cos":
+            case "tan":
+            case "Re":
+            case "Im":
+            case "abs":
+            case "sqrt":
+            case "print":
+                return 1;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+            case "%":
+                return 2;
+            case "plot":
+                return 3;
+            default:
+                return -1;
+        }
+    }
+
     public ComplexDouble mapAndEvaluate(String funcName, Argument[] args){
         switch (funcName){
+            case "+":
+                return StandardFunctions.add(args[0].getValue(),args[1].getValue());
+            case "-":
+                return StandardFunctions.sub(args[0].getValue(),args[1].getValue());
+            case "*":
+                return StandardFunctions.mul(args[0].getValue(),args[1].getValue());
+            case "/":
+                return StandardFunctions.div(args[0].getValue(),args[1].getValue());
+            case "%":
+                return StandardFunctions.mod(args[0].getValue(),args[1].getValue());
             case "sin":
                 return StandardFunctions.sin(args[0].getValue());
             case "cos":

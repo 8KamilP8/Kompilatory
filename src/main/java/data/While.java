@@ -5,7 +5,7 @@ public class While extends Instruction{
     private FunctionBody fbody;
     private Where condition;
 
-    public While(FunctionBody fbody,Where condition, Register register){
+    public While(FunctionBody fbody,Where condition, VariableRegister register){
         super(register);
         this.fbody=fbody;
         this.condition =condition;
@@ -13,9 +13,10 @@ public class While extends Instruction{
     @Override
     public ComplexDouble Do(){
         var returnValue = ComplexDouble.zero();
+        condition.setRegister(register);
         while (condition.evaluate()){
             for (var ins: fbody.instructions) {
-
+                ins.setRegister(register);
                 returnValue = ins.Do();
             }
         }
@@ -25,11 +26,6 @@ public class While extends Instruction{
     @Override
     public boolean check() {
         return true;
-    }
-
-    @Override
-    public String getHeader() {
-        return null;
     }
 
     public String toString(){

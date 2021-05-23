@@ -6,31 +6,18 @@ public class Assignment extends Instruction {
 
     private String varName;
     private Argument assignment;
-    private boolean global;
-    public Assignment(Register register, String varName, Argument assignment, boolean global) {
+    public Assignment(VariableRegister register, String varName, Argument assignment) {
         super(register);
         this.varName = varName;
         this.assignment = assignment;
-        this.global = global;
     }
 
     @Override
     public ComplexDouble Do() {
-        if(global){
-            assignment.setLocalRegister(localVariableRegister);
-            var ass = assignment.getValue();
-            register.globalVariableRegister.put(varName,ass);
-            return ass;
-        }
-        assignment.setLocalRegister(localVariableRegister);
-        if(localVariableRegister.containsKey(varName)){
-            localVariableRegister.put(varName,assignment.getValue());
-
-            return assignment.getValue();
-        }
-        localVariableRegister.put(varName,assignment.getValue());
-
-        return assignment.getValue();
+        assignment.setRegister(register);
+        var assignmentValue = assignment.getValue();
+        register.putVariable(varName,assignmentValue);
+        return assignmentValue;
     }
 
     @Override
@@ -43,8 +30,4 @@ public class Assignment extends Instruction {
         return assignment.isValid();
     }
 
-    @Override
-    public String getHeader() {
-        return varName + "=" + assignment;
-    }
 }

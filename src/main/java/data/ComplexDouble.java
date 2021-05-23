@@ -92,7 +92,7 @@ public class ComplexDouble implements Argument{
     }
 
     @Override
-    public void setLocalRegister(HashMap<String,ComplexDouble> localVariableRegister) {
+    public void setRegister(VariableRegister register) {
 
     }
 

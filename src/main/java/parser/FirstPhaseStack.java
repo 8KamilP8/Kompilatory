@@ -25,5 +25,11 @@ public class FirstPhaseStack {
     public void push(Argument argument){
         argumentStack.push(argument);
     }
+    public boolean isWhereEmpty(){
+        return whereStack.empty();
+    }
+    public boolean isArgumentEmpty(){
+        return argumentStack.empty();
+    }
 }
 
