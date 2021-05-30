@@ -6,33 +6,49 @@ function returnMand(z,t,max)
 {
     +(max,0);
 }
+function returndupa(z,t,max) where(>(abs(z),2))
+{
+    +(max,0);
+}
+function returndupa(z,t,max)
+{
+    +(t,0);
+}
+
 function mand(z0,max)
 {
     z=z0;
     t=0;
+    retVal=28;
     while(<(t,max))
     {
         retVal=returnMand(z,t,max);
+        t=returndupa(z,t,max);
         t=+(t,1);
+        z=+(*(z,z),z0);
     }
+
     +(retVal,0);
 }
 
 xc=-0.5;
 yc=0;
-size=2;
-i=0;
+size=0.5;
+index=0;
 max=255;
-while(<(i,512))
+n=512;
+while(<(index,512))
 {
+    j=0;
     while(<(j,512))
     {
-        x0 = -(xc,+(/(size,2), /(*(size,i),n)));
-        y0 = -(yc,+(/(size,2), /(*(size,j),n)));
-        z0 = +(x0, *(y0,0+1i));
-        color = -(max,mand(z0, max));
-        plot(i, -(-(n,1),j), color);
+        x0=+(-(xc,/(size,2)),/(*(size,index),n));
+        y0=+(-(yc,/(size,2)),/(*(size,j),n));
+        z0=+(x0,*(y0,0+1i));
+        color=-(max,mand(z0,max));
+        plot(index,-(-(n,1),j),color);
         j=+(j,1);
     }
-    i=+(i,1);
+    index=+(index,1);
 }
+

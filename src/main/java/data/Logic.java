@@ -20,7 +20,8 @@ public class Logic {
     public static boolean equal(ComplexDouble a, ComplexDouble b) { return a.equals(b); }
     public static boolean not(ComplexDouble a) {return a.realPart == 0.0;}
     public static boolean notEqual(ComplexDouble a, ComplexDouble b) { return !equal(a,b); }
-    public static boolean greater(ComplexDouble a, ComplexDouble b) { return a.realPart > b.realPart; }
+    public static boolean greater(ComplexDouble a, ComplexDouble b) {
+        return a.realPart > b.realPart; }
     public static boolean lower(ComplexDouble a, ComplexDouble b) { return a.realPart < b.realPart; }
     public static boolean greaterEqual(ComplexDouble a, ComplexDouble b) { return a.realPart >= b.realPart; }
     public static boolean lowerEqual(ComplexDouble a, ComplexDouble b) { return a.realPart <= b.realPart; }
