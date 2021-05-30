@@ -146,7 +146,7 @@ public class CalculationListener extends CalculatorBaseListener {
         String leftName = ctx.variable().NAME().getText();
 
         boolean b = ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction || ctx.variable().GLOBAL() != null;
-        System.out.println("ASS: " + ctx.variable().NAME().getText()+" "+ctx.variable().GLOBAL() + " " + b);
+        //System.out.println("ASS: " + ctx.variable().NAME().getText()+" "+ctx.variable().GLOBAL() + " " + b);
         Assignment assignment = new Assignment(variableRegister,leftName,stack.pop());
         if(ctx.parent.parent.getRuleIndex() == CalculatorParser.RULE_program_instruction) mainInstructionStackNum++;
         if(!whileInstructionsCounter.empty()) whileInstructionsCounter.push(whileInstructionsCounter.pop()+1);
@@ -179,6 +179,7 @@ public class CalculationListener extends CalculatorBaseListener {
         FunctionRegister.getInstance().putFunctionBody(new PredicateHeader(currentFunctionName,names),where,funcBody);
 
     }
+
     @Override public void enterWhileLoop(CalculatorParser.WhileLoopContext ctx) {
         whileInstructionsCounter.push(0);
     }

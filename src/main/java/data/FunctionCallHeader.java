@@ -63,21 +63,21 @@ public class FunctionCallHeader extends Instruction implements Argument {
             return val;
         }
         else {
-            AtomicReference<ComplexDouble> returnVal = new AtomicReference<>(new ComplexDouble(0.0, 0.0));
+            var returnVal = new ComplexDouble(0.0, 0.0);
             putHeaderVariablesIntoRegister();
             FunctionBody body = getBody();
-            body.instructions.forEach(ins -> {
+            for(var ins : body.instructions){
                 ins.setRegister(register);
-                var val = ins.Do();
-                returnVal.set(val);
-            });
-            return returnVal.get();
+                returnVal = ins.Do();
+            }
+            return returnVal;
         }
     }
     private FunctionBody getBody(){
         return FunctionRegister.getInstance().getFunctionBody(this,register);
     }
     private void putHeaderVariablesIntoRegister(){
+
         var headers = FunctionRegister.getInstance().getFunctionHeader(funcName,args.length);
         for(int i=0;i<args.length;i++){
             args[i].setRegister(register.getParentRegister());

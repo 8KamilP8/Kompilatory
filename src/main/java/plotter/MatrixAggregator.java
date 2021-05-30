@@ -23,19 +23,19 @@ public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
-    public int size = 1000;
-    public float minValueX = -2;
-    public float maxValueX = 2;
+    public int size = 512;
+    public float minValueX = 0;
+    public float maxValueX = 512;
 
-    public float minValueY = -2;
-    public float maxValueY = 2;
+    public float minValueY = 0;
+    public float maxValueY = 512;
 
     public float minStep;
     public MatrixAggregator() {
         matrix = new ArrayList<ArrayList<MatrixElement>>();
-        for (int i = 0; i < size+1; i++) {
+        for (int i = 0; i < size; i++) {
             matrix.add(new ArrayList<MatrixElement>());
-            for (int j = 0; j < size+1; j++) {
+            for (int j = 0; j < size; j++) {
                 matrix.get(i).add(new MatrixElement(0));
             }
         }

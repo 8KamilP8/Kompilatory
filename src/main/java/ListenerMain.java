@@ -12,8 +12,11 @@ import java.io.*;
 
 public class ListenerMain {
     public static void main(String[] args) throws IOException {
-        String fileName = "src\\main\\java\\parser\\Brod.hl";
-        File file = new File(fileName);
+        //String fileName = "Brod.hl";
+        String fileName = "sin.hl";
+        // String fileName = "circles.hl";
+        String filePath = "src\\main\\java\\parser\\" + fileName;
+        File file = new File(filePath);
         FileInputStream fis = null;
         MatrixAggregator aggregator = new MatrixAggregator();
         StandardFunctions.plotter = aggregator;

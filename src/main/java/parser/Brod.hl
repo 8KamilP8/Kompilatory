@@ -1,119 +1,38 @@
-x=4;
-y=0;
-function f(x)
+function returnMand(z,t,max) where(>(abs(z),2))
 {
-    h(x);
-    +(x,5);
+    +(t,0);
 }
-function f(x,y)
+function returnMand(z,t,max)
 {
-    +(x,y);
+    +(max,0);
 }
-function g(x)
+function mand(z0,max)
 {
-    +(x,5);
-}
-function h(x)
-{
-    *(x,x);
-}
-b=f(h(x),+(2,2));
-a=g(x);
-print(x);
-print(y);
-x=0;
-function k(x)
-{
-    *(x,x);
-}
-function circle(radius)
-{
-    x=0;
-    while(<=(x,radius))
+    z=z0;
+    t=0;
+    while(<(t,max))
     {
-        plot(x,sqrt(-(k(radius),k(x))),255);
-        x=+(x,0.004);
+        retVal=returnMand(z,t,max);
+        t=+(t,1);
     }
-    while(>=(x,0))
-    {
-        plot(x,-(0,sqrt(-(k(radius),k(x)))),255);
-        x=-(x,0.004);
-    }
-    while(>=(x,-(0,radius)))
-    {
-       plot(x,sqrt(-(k(radius),k(x))),255);
-       x=-(x,0.004);
-    }
-    while(<=(x,0))
-    {
-       plot(x,-(0,sqrt(-(k(radius),k(x)))),255);
-       x=+(x,0.004);
-    }
-    y=0;
-    while(<=(y,radius))
-    {
-        plot(sqrt(-(k(radius),k(y))),y,255);
-        y=+(y,0.004);
-    }
-    while(>=(y,0))
-    {
-        plot(-(0,sqrt(-(k(radius),k(y)))),y,255);
-        y=-(y,0.004);
-    }
-    while(>=(y,-(0,radius)))
-    {
-       plot(sqrt(-(k(radius),k(y))),y,255);
-       y=-(y,0.004);
-    }
-    while(<=(y,0))
-    {
-       plot(-(0,sqrt(-(k(radius),k(y)))),y,255);
-       y=+(y,0.004);
-    }
-}
-function plotsin()
-{
-    x=-2;
-    while(<=(x,2))
-    {
-        plot(x,sin(x),255);
-        x=+(x,0.0004);
-    }
+    +(retVal,0);
 }
 
-
-function plotFadeSin()
+xc=-0.5;
+yc=0;
+size=2;
+i=0;
+max=255;
+while(<(i,512))
 {
-
-    alfa=255;
-    y=0;
-    while(>(alfa,0))
+    while(<(j,512))
     {
-        x=-2;
-        while(<=(x,2))
-        {
-            plot(x,+(sin(x),y),alfa);
-            plot(x,-(sin(x),y),alfa);
-            x=+(x,step);
-        }
-        alfa=-(alfa,1);
-        y=+(y,step);
+        x0 = -(xc,+(/(size,2), /(*(size,i),n)));
+        y0 = -(yc,+(/(size,2), /(*(size,j),n)));
+        z0 = +(x0, *(y0,0+1i));
+        color = -(max,mand(z0, max));
+        plot(i, -(-(n,1),j), color);
+        j=+(j,1);
     }
-
+    i=+(i,1);
 }
-function plotOX()
-{
-    x=-2;
-    y=-2;
-    while(<(x,2))
-    {
-        plot(x,0,122);
-        x=+(x,step);
-    }
-    while(<(y,2))
-    {
-        plot(0,y,122);
-        y=+(y,step);
-    }
-}
-plotFadeSin();
