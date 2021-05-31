@@ -23,7 +23,7 @@ public class MatrixAggregator implements Plotter {
 
 
     public ArrayList<ArrayList<MatrixElement>> matrix;
-    public int size = 512;
+    public int size;
     public float minValueX = 0;
     public float maxValueX = 512;
 
@@ -32,6 +32,10 @@ public class MatrixAggregator implements Plotter {
 
     public float minStep;
     public MatrixAggregator() {
+        this(512);
+    }
+    public MatrixAggregator(int size) {
+        this.size = size;
         matrix = new ArrayList<ArrayList<MatrixElement>>();
         for (int i = 0; i < size; i++) {
             matrix.add(new ArrayList<MatrixElement>());
@@ -73,6 +77,24 @@ public class MatrixAggregator implements Plotter {
     @Override
     public ComplexDouble getStep() {
         return new ComplexDouble((double)minStep,0.0);
+    }
+
+    @Override
+    public void setup(int size, double min, double max) {
+        minValueX = (float)min;
+        maxValueX = (float)max;
+
+        minValueY = (float)min;
+         maxValueY = (float)max;
+        this.size = size;
+        matrix = new ArrayList<ArrayList<MatrixElement>>();
+        for (int i = 0; i < size; i++) {
+            matrix.add(new ArrayList<MatrixElement>());
+            for (int j = 0; j < size; j++) {
+                matrix.get(i).add(new MatrixElement(0));
+            }
+        }
+        minStep = (maxValueX-minValueX)/size;
     }
 
 

@@ -12,8 +12,8 @@ import java.io.*;
 
 public class ListenerMain {
     public static void main(String[] args) throws IOException {
-        String fileName = "Brod.hl";
-        //String fileName = "sin.hl";
+        //String fileName = "Brod.hl";
+        String fileName = "sin.hl";
         // String fileName = "circles.hl";
         String filePath = "src\\main\\java\\parser\\" + fileName;
         File file = new File(filePath);

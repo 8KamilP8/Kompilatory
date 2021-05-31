@@ -69,4 +69,8 @@ public class StandardFunctions {
     public static ComplexDouble step(){
         return plotter.getStep();
     }
+    public static ComplexDouble setup(ComplexDouble size, ComplexDouble min, ComplexDouble max){
+        plotter.setup(size.realPart.intValue(),min.realPart,max.realPart);
+        return ComplexDouble.zero();
+    }
 }
