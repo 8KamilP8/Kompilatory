@@ -12,7 +12,7 @@ function returndupa(z,t,max) where(>(abs(z),2))
 }
 function returndupa(z,t,max)
 {
-    +(t,0);
+    +(t,0)
 }
 
 function mand(z0,max)

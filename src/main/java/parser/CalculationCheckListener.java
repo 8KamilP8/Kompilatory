@@ -1,20 +1,16 @@
 package parser;
 
 import data.*;
-import javafx.util.Pair;
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import plotter.MatrixAggregator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
 
 
-public class CalculationListener extends CalculatorBaseListener {
+public class CalculationCheckListener extends CalculatorBaseListener {
 
     private Stack<Instruction> instructionStack = new Stack<>();
     private MatrixAggregator aggregator;
@@ -26,7 +22,7 @@ public class CalculationListener extends CalculatorBaseListener {
     private String currentFunctionName = "";
     //private Where lastWhere = Where.empty();
 
-    public CalculationListener(MatrixAggregator aggregator) {
+    public CalculationCheckListener(MatrixAggregator aggregator) {
         this.aggregator = aggregator;
         variableRegister = new VariableRegister();
         stack = new FirstPhaseStack();
@@ -101,6 +97,8 @@ public class CalculationListener extends CalculatorBaseListener {
                     args[i] = stack.pop();
                 }
                 var fun = new FunctionCallHeader(funName,args,variableRegister);
+                if (!FunctionRegister.getInstance().containsFunction(funName, args.length))
+                    throw new RuntimeException("Cannot resolve function " + fun.toString() + ", line: " + ctx.start.getLine());
                 stack.push(fun);
             }
 
@@ -126,6 +124,8 @@ public class CalculationListener extends CalculatorBaseListener {
                     args[i] = stack.pop();
                 }
                 var fun = new FunctionCallHeader(ctx.getChild(0).getText(),args,variableRegister);
+                if (!FunctionRegister.getInstance().containsFunction(funName, args.length))
+                    throw new RuntimeException("Cannot resolve function " + fun.toString() + ", line: " + ctx.start.getLine());
                 instructionStack.push(fun);
                 if(ctx.getParent().getParent().getRuleIndex() == CalculatorParser.RULE_program_instruction){
                     mainInstructionStackNum++;
@@ -133,6 +133,7 @@ public class CalculationListener extends CalculatorBaseListener {
 
                 if(!whileInstructionsCounter.empty()) {
                     System.out.println(funName);
+
                     whileInstructionsCounter.push(whileInstructionsCounter.pop()+1);
                 }
 
@@ -177,7 +178,6 @@ public class CalculationListener extends CalculatorBaseListener {
             where = stack.popWhere();
         }
         System.out.println(currentFunctionName);
-        FunctionRegister.getInstance().putFunctionBody(new PredicateHeader(currentFunctionName,names),where,funcBody);
 
     }
 
@@ -219,7 +219,7 @@ public class CalculationListener extends CalculatorBaseListener {
         }
         var header = new PredicateHeader(currentFunctionName,names);
         if(!FunctionRegister.getInstance().containsFunction(header.getName(),names.length)){
-            FunctionRegister.getInstance().putFunction(header);
+            throw new RuntimeException("Cannot resolve function, line: " + ctx.start.getLine());
         }
 
     }
@@ -279,14 +279,11 @@ public class CalculationListener extends CalculatorBaseListener {
     public void visitErrorNode(ErrorNode node) {
         System.out.println("jakiś prefix: " + node.getText());
         System.out.println("jakiś treee: " + node.getParent().getParent().getText());
-        throw new RuntimeException("Syntax Error");
     }
 
     @Override public void enterPattern_matching(CalculatorParser.Pattern_matchingContext ctx) {
 
     }
-
-
 
     @Override public void exitPattern_matching(CalculatorParser.Pattern_matchingContext ctx) {
         String logicOperationName = ctx.getChild(0).getText();

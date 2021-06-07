@@ -3,18 +3,16 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import parser.CalculationListener;
-import parser.CalculatorLexer;
-import parser.CalculatorParser;
+import parser.*;
 import plotter.MatrixAggregator;
 
 import java.io.*;
 
 public class ListenerMain {
     public static void main(String[] args) throws IOException {
-        //String fileName = "Brod.hl";
+        String fileName = "Brod.hl";
         // String fileName = "sin.hl";
-        String fileName = "circles.hl";
+        //String fileName = "circles.hl";
         String filePath = "src\\main\\java\\parser\\" + fileName;
         File file = new File(filePath);
         FileInputStream fis = null;
@@ -30,11 +28,17 @@ public class ListenerMain {
             // Create a lexer that feeds off of input CharStream
             CalculatorLexer lexer = new CalculatorLexer(input);
 
+            var errList = new ErrorListener();
+
+            lexer.addErrorListener(errList);
+
             // Create a buffer of tokens pulled from the lexer
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             // Create a parser that feeds off the tokens buffer
             CalculatorParser parser = new CalculatorParser(tokens);
+
+            parser.addErrorListener(errList);
 
             // Begin parsing at rule prog
             ParseTree tree = parser.start();
@@ -46,8 +50,11 @@ public class ListenerMain {
             ParseTreeWalker walker = new ParseTreeWalker();
             // Walk the tree created during the parse, trigger callbacks
             var listener = new CalculationListener(aggregator);
+            var checkListener = new CalculationCheckListener(aggregator);
+
 
             walker.walk(listener, tree);
+            walker.walk(checkListener, tree);
 
 
             listener.ListInstructionsStack();
