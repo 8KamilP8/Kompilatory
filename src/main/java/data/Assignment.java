@@ -1,7 +1,5 @@
 package data;
 
-import java.util.HashMap;
-
 public class Assignment extends Instruction {
 
     private String varName;
@@ -14,7 +12,7 @@ public class Assignment extends Instruction {
 
     @Override
     public ComplexDouble Do() {
-        assignment.setRegister(register);
+        assignment.setArgRegister(register);
         var assignmentValue = assignment.getValue();
         register.putVariable(varName,assignmentValue);
         return assignmentValue;
@@ -23,6 +21,11 @@ public class Assignment extends Instruction {
     @Override
     public String toString() {
         return  varName + " = " + assignment;
+    }
+
+    @Override
+    public void setRegister(VariableRegister register) {
+        this.register=register;
     }
 
     @Override

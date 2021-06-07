@@ -1,8 +1,5 @@
 package data;
 
-import java.lang.management.LockInfo;
-import java.util.HashMap;
-
 public class Where implements Argument {
     private LogicOperationType operationType;
     private Argument arg1;
@@ -10,7 +7,7 @@ public class Where implements Argument {
     private VariableRegister localRegister;
 
     @Override
-    public void setRegister(VariableRegister register){
+    public void setArgRegister(VariableRegister register){
         localRegister = register;
     }
     public Where(LogicOperationType operationType, Argument arg1, Argument arg2) {
@@ -25,8 +22,8 @@ public class Where implements Argument {
     }
 
     public boolean evaluate(){
-        arg1.setRegister(localRegister);
-        arg2.setRegister(localRegister);
+        arg1.setArgRegister(localRegister);
+        arg2.setArgRegister(localRegister);
         return Logic.eval(operationType,arg1.getValue(),arg2.getValue());
     }
 

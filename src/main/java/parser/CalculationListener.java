@@ -271,12 +271,13 @@ public class CalculationListener extends CalculatorBaseListener {
 
     @Override
     public void visitTerminal(TerminalNode node) {
-        super.visitTerminal(node);
+
     }
 
     @Override
     public void visitErrorNode(ErrorNode node) {
-        super.visitErrorNode(node);
+        System.out.println("jakiś prefix: " + node.getText());
+        System.out.println("jakiś treee: " + node.getParent().getParent().getText());
     }
 
     @Override public void enterPattern_matching(CalculatorParser.Pattern_matchingContext ctx) {

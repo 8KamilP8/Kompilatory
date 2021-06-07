@@ -21,14 +21,16 @@ public class FunctionRegister {
     public FunctionBody getFunctionBody(FunctionCallHeader header, VariableRegister register){
         PredicateHeader predicateHeader = new PredicateHeader(header.funcName,new String[header.args.length]);
         var funcBodyList = map.get(predicateHeader);
+        if(funcBodyList == null)
+            throw new RuntimeException("Cannot find body for function: " + header.toString());
         for(var pair : funcBodyList){
             var where = pair.getKey();
-            where.setRegister(register);
+            where.setArgRegister(register);
             if(where.evaluate()){
                 return pair.getValue();
             }
         }
-        return null;
+        throw new RuntimeException("Cannot match any where closure for function: " + header.toString());
     }
     public String[] getFunctionHeader(String funName, int argsNum){
         var set = map.keySet();
@@ -36,7 +38,7 @@ public class FunctionRegister {
             if(predicateHeader.equals(new PredicateHeader(funName,new String[argsNum])))
                 return predicateHeader.getInputs();
         }
-        return new String[0];
+        throw new RuntimeException("Cannot find function header: " + funName + "/" + argsNum);
     }
     public void putFunctionBody(PredicateHeader header, Where where, FunctionBody body){
         map.get(header).add(new Pair<>(where,body));

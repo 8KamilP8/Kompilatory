@@ -1,12 +1,5 @@
 package data;
 
-import plotter.MatrixAggregator;
-import plotter.Plotter;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
-
 public class FunctionCallHeader extends Instruction implements Argument {
     public String funcName;
     public Argument[] args;
@@ -21,12 +14,18 @@ public class FunctionCallHeader extends Instruction implements Argument {
     public ComplexDouble getValue() {
         return Do();
     }
-
+    @Override
+    public void setArgRegister(VariableRegister reg) {
+        this.register = new VariableRegister(reg);
+        for (var arg: args) {
+            arg.setArgRegister(reg);
+        }
+    }
     @Override
     public void setRegister(VariableRegister reg) {
         this.register = new VariableRegister(reg);
         for (var arg: args) {
-            arg.setRegister(reg);
+            arg.setArgRegister(reg);
         }
     }
 
@@ -57,7 +56,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
     public ComplexDouble Do() {
         if(StandardFunctions.map.contains(funcName)) {
             for(var arg : args){
-                arg.setRegister(register);
+                arg.setArgRegister(register);
             }
             var val = StandardFunctions.map.mapAndEvaluate(funcName, args);
             return val;
@@ -80,7 +79,7 @@ public class FunctionCallHeader extends Instruction implements Argument {
 
         var headers = FunctionRegister.getInstance().getFunctionHeader(funcName,args.length);
         for(int i=0;i<args.length;i++){
-            args[i].setRegister(register.getParentRegister());
+            args[i].setArgRegister(register.getParentRegister());
             register.putVariable(headers[i], args[i].getValue());
         }
     }

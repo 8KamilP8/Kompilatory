@@ -92,7 +92,7 @@ public class ComplexDouble implements Argument{
     }
 
     @Override
-    public void setRegister(VariableRegister register) {
+    public void setArgRegister(VariableRegister register) {
 
     }
 

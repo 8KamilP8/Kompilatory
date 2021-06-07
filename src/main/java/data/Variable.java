@@ -21,7 +21,7 @@ public class Variable implements Argument {
     }
 
     @Override
-    public void setRegister(VariableRegister register) {
+    public void setArgRegister(VariableRegister register) {
         this.register = register;
     }
 

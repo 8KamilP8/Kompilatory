@@ -15,9 +15,7 @@ public abstract class Instruction {
         return "Instruction{}";
     }
 
-    public void setRegister(VariableRegister register) {
-        this.register = register;
-    }
+    public abstract void setRegister(VariableRegister register);
 
     public abstract boolean check();
 }

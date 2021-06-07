@@ -13,7 +13,7 @@ public class While extends Instruction{
     @Override
     public ComplexDouble Do(){
         var returnValue = ComplexDouble.zero();
-        condition.setRegister(register);
+        condition.setArgRegister(register);
         while (condition.evaluate()){
             for (var ins: fbody.instructions) {
                 ins.setRegister(register);
@@ -30,5 +30,10 @@ public class While extends Instruction{
 
     public String toString(){
         return "while(" + condition.toString() + ")" +fbody.toString();
+    }
+
+    @Override
+    public void setRegister(VariableRegister register) {
+        this.register=register;
     }
 }
